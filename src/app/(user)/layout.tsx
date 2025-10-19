@@ -1,3 +1,5 @@
+// src/app/(user)/layout.tsx
+"use client";
 import React from "react";
 
 export default function UserLayout({
@@ -6,9 +8,8 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <nav>Navbar User</nav>
-      <main>{children}</main>
+    <div className="min-h-screen bg-gray-100 antialiased">
+      {children}
     </div>
   );
 }

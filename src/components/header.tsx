@@ -60,12 +60,13 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
               <Home className="w-5 h-5" /> Dashboard
             </Link>
 
-            <a
-              href="#"
+            {/* 🔗 Arsip Kematian menuju /information */}
+            <Link
+              href="/information"
               className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
             >
               <FileText className="w-5 h-5" /> Arsip Kematian
-            </a>
+            </Link>
 
             <a
               href="#"
@@ -123,12 +124,14 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
             <Home className="w-5 h-5" /> Dashboard
           </Link>
 
-          <a
-            href="#"
+          {/* 🔗 Arsip Kematian menuju /information */}
+          <Link
+            href="/information"
+            onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
           >
             <FileText className="w-5 h-5" /> Arsip Kematian
-          </a>
+          </Link>
 
           <a
             href="#"

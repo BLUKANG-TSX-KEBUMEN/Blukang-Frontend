@@ -3,33 +3,51 @@
 import React, { useState } from 'react'
 import Header from '@/components/header'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const HomePage = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="flex bg-gray-100 min-h-screen">
-      {/* Sidebar & Header */}
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* ===== Header & Sidebar ===== */}
       <Header isOpen={isOpen} setIsOpen={setIsOpen} />
 
-      {/* Konten utama */}
+      {/* ===== Hero Section ===== */}
+      <section
+        className="relative w-full flex items-center justify-center text-center text-white"
+        style={{ marginTop: '56px', minHeight: '300px' }}
+      >
+        {/* Background Image */}
+        <Image
+          src="/hero-desa.jpg"
+          alt="Hero Image Desa Patukrejomulyo"
+          fill
+          className="object-cover brightness-[0.55]"
+          priority
+        />
+
+        {/* Overlay Text */}
+        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4 py-10">
+          <span className="inline-block bg-blue-600/90 text-xs md:text-sm font-medium px-3 py-1 rounded-full mb-3">
+            Portal Resmi Desa
+          </span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-tight">
+            Layanan Digital Desa Patukrejomulyo
+          </h1>
+          <p className="text-sm sm:text-base text-gray-100 max-w-2xl mx-auto">
+            Akses cepat informasi desa, laporan fasilitas umum, dan direktori UMKM lokal dalam satu platform.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== Main Content ===== */}
       <main
-        className={`flex-1 transition-all duration-300 overflow-y-auto p-6 md:p-10 mt-[56px] ${
+        className={`flex-1 transition-all duration-300 overflow-y-auto p-6 md:p-10 ${
           isOpen ? 'blur-sm md:ml-64' : 'md:ml-64'
         }`}
       >
-        {/* Header Dashboard */}
-        <div className="flex flex-col md:flex-row justify-between md:items-center items-start mb-8 space-y-4 md:space-y-0">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-
-          <input
-            type="text"
-            placeholder="Cari berita, laporan..."
-            className="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full md:w-72 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          />
-        </div>
-
-        {/* Statistik Cards */}
+        {/* Statistik Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {[
             { title: 'Berita', value: 12 },
@@ -47,78 +65,19 @@ const HomePage = () => {
           ))}
         </div>
 
-        {/* Tabel Laporan */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border mb-10">
-          <h2 className="font-semibold mb-4 text-lg text-gray-800">
-            Kelola Laporan Warga
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left border-collapse">
-              <thead>
-                <tr className="border-b text-gray-600">
-                  <th className="pb-3 pr-4">Judul</th>
-                  <th className="pb-3 pr-4">Pelapor</th>
-                  <th className="pb-3 pr-4">Deskripsi</th>
-                  <th className="pb-3 pr-4">Status</th>
-                  <th className="pb-3 pr-4">Keterangan</th>
-                  <th className="pb-3 pr-4">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b hover:bg-gray-50">
-                  <td>Lampu jalan mati</td>
-                  <td>Budi</td>
-                  <td>Di RT 03, lampu jalan mati sejak kemarin.</td>
-                  <td>
-                    <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs">
-                      Pending
-                    </span>
-                  </td>
-                  <td>-</td>
-                  <td>
-                    <button className="bg-black text-white px-3 py-1 rounded-md text-xs hover:opacity-80">
-                      Simpan
-                    </button>
-                  </td>
-                </tr>
-                <tr className="hover:bg-gray-50">
-                  <td>Sampah menumpuk</td>
-                  <td>Sari</td>
-                  <td>TPS penuh dan berbau tak sedap.</td>
-                  <td>
-                    <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs">
-                      On progress
-                    </span>
-                  </td>
-                  <td>-</td>
-                  <td>
-                    <button className="bg-black text-white px-3 py-1 rounded-md text-xs hover:opacity-80">
-                      Simpan
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* ===== Berita, Laporan, Arsip ===== */}
+        {/* ===== Berita Terkini ===== */}
         <section className="space-y-10">
-          {/* Berita Terkini */}
+          {/* Berita */}
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-gray-800">
-                Berita Terkini
-              </h2>
-              <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">
-                6
-              </span>
+              <h2 className="text-lg font-semibold text-gray-800">Berita Terkini</h2>
+              <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">6</span>
             </div>
+
             <div className="space-y-4">
               {[
                 {
-                  title:
-                    'Pembangunan Gedung Baru SD Negeri Patukrejomulyo Dimulai',
+                  title: 'Pembangunan Gedung Baru SD Negeri Patukrejomulyo Dimulai',
                   date: '12 Oktober 2025',
                 },
                 {
@@ -126,8 +85,7 @@ const HomePage = () => {
                   date: '9 Oktober 2025',
                 },
                 {
-                  title:
-                    'Posyandu Balita Bulan Oktober Terlaksana dengan Lancar',
+                  title: 'Posyandu Balita Bulan Oktober Terlaksana dengan Lancar',
                   date: '7 Oktober 2025',
                 },
               ].map((item, i) => (
@@ -144,7 +102,6 @@ const HomePage = () => {
               ))}
             </div>
 
-            {/* Tombol ke halaman berita */}
             <Link
               href="/news"
               className="block w-full mt-4 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium text-center"
@@ -153,16 +110,13 @@ const HomePage = () => {
             </Link>
           </div>
 
-          {/* Laporan Warga */}
+          {/* ===== Laporan Warga ===== */}
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-gray-800">
-                Laporan Warga
-              </h2>
-              <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">
-                7
-              </span>
+              <h2 className="text-lg font-semibold text-gray-800">Laporan Warga</h2>
+              <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">7</span>
             </div>
+
             <div className="space-y-4">
               {[
                 { title: 'Jembatan Kayu Rapuh dan Berbahaya', status: 'Selesai' },
@@ -176,9 +130,7 @@ const HomePage = () => {
                 >
                   <div>
                     <h3 className="font-medium text-gray-800">{item.title}</h3>
-                    <p className="text-sm text-gray-500">
-                      📍 Lokasi sekitar desa
-                    </p>
+                    <p className="text-sm text-gray-500">📍 Lokasi sekitar desa</p>
                   </div>
                   <span
                     className={`text-xs px-3 py-1 rounded-full ${
@@ -195,7 +147,6 @@ const HomePage = () => {
               ))}
             </div>
 
-            {/* Tombol ke halaman laporan */}
             <div className="flex gap-2 mt-4">
               <Link
                 href="/report"
@@ -203,17 +154,19 @@ const HomePage = () => {
               >
                 Lihat Semua
               </Link>
-              <button className="flex-1 bg-gray-100 text-gray-800 py-2 rounded-lg font-medium">
+              <Link
+                href="/report/form"
+                className="flex-1 bg-gray-100 text-gray-800 py-2 rounded-lg font-medium text-center"
+              >
                 Kirim Laporan
-              </button>
+              </Link>
             </div>
           </div>
 
-          {/* Arsip Kematian */}
+          {/* ===== Arsip Kematian ===== */}
           <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
-              Arsip Kematian
-            </h2>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Arsip Kematian</h2>
+
             <div className="space-y-4">
               {[1, 2].map((i) => (
                 <div
@@ -234,7 +187,6 @@ const HomePage = () => {
               ))}
             </div>
 
-            {/* Tombol ke halaman arsip kematian */}
             <Link
               href="/information"
               className="block w-full mt-4 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium text-center"

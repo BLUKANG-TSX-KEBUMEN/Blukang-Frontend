@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import {
   Home,
   FileText,
@@ -19,6 +20,11 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
+  const pathname = usePathname()
+
+  // Fungsi bantu: menentukan apakah menu aktif
+  const isActive = (path: string) => pathname === path
+
   return (
     <>
       {/* ===== 🔵 HEADER BAR ATAS ===== */}
@@ -38,14 +44,16 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
         </div>
 
         {/* Tombol Lapor */}
-        <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-lg font-medium shadow-sm transition-all">
+        <Link
+          href="/report/form"
+          className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-lg font-medium shadow-sm transition-all"
+        >
           Lapor
-        </button>
+        </Link>
       </header>
 
       {/* ===== SIDEBAR DESKTOP ===== */}
       <aside className="hidden md:flex flex-col bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white w-64 h-screen fixed left-0 top-[56px] shadow-xl z-40">
-        {/* Bagian atas (scrollable menu) */}
         <div className="flex-1 overflow-y-auto p-6 pb-24">
           <h1 className="text-lg font-semibold mb-10 flex items-center gap-2">
             <div className="w-4 h-4 rounded-full border-2 border-white"></div>
@@ -56,7 +64,11 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
             {/* Dashboard */}
             <Link
               href="/home"
-              className="flex items-center gap-3 bg-blue-800/70 hover:bg-blue-900 transition-colors rounded-lg px-3 py-2 font-semibold"
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 font-semibold transition-all duration-200 ${
+                isActive('/home')
+                  ? 'bg-blue-900 shadow-inner'
+                  : 'hover:bg-blue-800/60'
+              }`}
             >
               <Home className="w-5 h-5" /> Dashboard
             </Link>
@@ -64,34 +76,50 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
             {/* Arsip Kematian */}
             <Link
               href="/information"
-              className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+                isActive('/information')
+                  ? 'bg-blue-900 shadow-inner'
+                  : 'hover:bg-blue-800/60'
+              }`}
             >
               <FileText className="w-5 h-5" /> Arsip Kematian
             </Link>
 
-            {/* 🔗 Berita Terkini → /news */}
+            {/* Berita Terkini */}
             <Link
               href="/news"
-              className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+                isActive('/news')
+                  ? 'bg-blue-900 shadow-inner'
+                  : 'hover:bg-blue-800/60'
+              }`}
             >
               <Newspaper className="w-5 h-5" /> Berita Terkini
             </Link>
 
-            {/* 🔗 Laporan Warga → /report */}
+            {/* Laporan Warga */}
             <Link
               href="/report"
-              className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+                isActive('/report')
+                  ? 'bg-blue-900 shadow-inner'
+                  : 'hover:bg-blue-800/60'
+              }`}
             >
               <Activity className="w-5 h-5" /> Laporan Warga
             </Link>
 
             {/* Form Laporan Kerusakan */}
-            <a
-              href="#"
-              className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+            <Link
+              href="/report/form"
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+                isActive('/report/form')
+                  ? 'bg-blue-900 shadow-inner'
+                  : 'hover:bg-blue-800/60'
+              }`}
             >
               <Image className="w-5 h-5" /> Form Laporan Kerusakan
-            </a>
+            </Link>
           </nav>
         </div>
 
@@ -109,6 +137,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
         w-64 p-6 flex flex-col justify-between rounded-r-3xl shadow-lg transition-transform duration-300 z-50
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}
       >
+        {/* Header Sidebar Mobile */}
         <div className="flex justify-between items-center mb-8 mt-2">
           <h1 className="text-lg font-semibold flex items-center gap-2">
             <div className="w-4 h-4 rounded-full border-2 border-white"></div>
@@ -119,51 +148,70 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
           </button>
         </div>
 
+        {/* Menu Mobile */}
         <nav className="flex flex-col gap-5 text-sm flex-grow overflow-y-auto">
           <Link
             href="/home"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+              isActive('/home')
+                ? 'bg-blue-900 shadow-inner'
+                : 'hover:bg-blue-800/60'
+            }`}
           >
             <Home className="w-5 h-5" /> Dashboard
           </Link>
 
-          {/* Arsip Kematian */}
           <Link
             href="/information"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+              isActive('/information')
+                ? 'bg-blue-900 shadow-inner'
+                : 'hover:bg-blue-800/60'
+            }`}
           >
             <FileText className="w-5 h-5" /> Arsip Kematian
           </Link>
 
-          {/* 🔗 Berita Terkini → /news */}
           <Link
             href="/news"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+              isActive('/news')
+                ? 'bg-blue-900 shadow-inner'
+                : 'hover:bg-blue-800/60'
+            }`}
           >
             <Newspaper className="w-5 h-5" /> Berita Terkini
           </Link>
 
-          {/* 🔗 Laporan Warga → /report */}
           <Link
             href="/report"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+              isActive('/report')
+                ? 'bg-blue-900 shadow-inner'
+                : 'hover:bg-blue-800/60'
+            }`}
           >
             <Activity className="w-5 h-5" /> Laporan Warga
           </Link>
 
-          {/* Form Laporan Kerusakan */}
-          <a
-            href="#"
-            className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
+          <Link
+            href="/report/form"
+            onClick={() => setIsOpen(false)}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
+              isActive('/report/form')
+                ? 'bg-blue-900 shadow-inner'
+                : 'hover:bg-blue-800/60'
+            }`}
           >
             <Image className="w-5 h-5" /> Form Laporan Kerusakan
-          </a>
+          </Link>
         </nav>
 
+        {/* Tombol Logout */}
         <div className="border-t border-blue-500/40 pt-4">
           <button className="flex items-center gap-2 text-red-300 hover:text-red-400 w-full justify-center font-medium">
             <LogOut className="w-5 h-5" /> Logout
@@ -171,7 +219,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
         </div>
       </div>
 
-      {/* ===== OVERLAY (klik area luar sidebar) ===== */}
+      {/* ===== OVERLAY ===== */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"

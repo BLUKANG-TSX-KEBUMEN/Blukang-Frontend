@@ -5,13 +5,14 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   Home,
-  FileText,
+  FileArchive,
   Newspaper,
-  Activity,
-  LogOut,
-  Image,
+  ClipboardList,
+  Send,
   Menu,
   X,
+  LogOut,
+  FilePenLine,
 } from 'lucide-react'
 
 interface HeaderProps {
@@ -46,8 +47,9 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
         {/* Tombol Lapor */}
         <Link
           href="/report/form"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-lg font-medium shadow-sm transition-all"
+          className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-lg font-medium shadow-sm transition-all flex items-center gap-2"
         >
+          <Send className="w-4 h-4" />
           Lapor
         </Link>
       </header>
@@ -57,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
         <div className="flex-1 overflow-y-auto p-6 pb-24">
           <h1 className="text-lg font-semibold mb-10 flex items-center gap-2">
             <div className="w-4 h-4 rounded-full border-2 border-white"></div>
-            Layanan Digital
+            Menu Utama
           </h1>
 
           <nav className="flex flex-col gap-3 text-sm">
@@ -82,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
                   : 'hover:bg-blue-800/60'
               }`}
             >
-              <FileText className="w-5 h-5" /> Arsip Kematian
+              <FileArchive className="w-5 h-5" /> Arsip Kematian
             </Link>
 
             {/* Berita Terkini */}
@@ -106,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
                   : 'hover:bg-blue-800/60'
               }`}
             >
-              <Activity className="w-5 h-5" /> Laporan Warga
+              <ClipboardList className="w-5 h-5" /> Laporan Warga
             </Link>
 
             {/* Form Laporan Kerusakan */}
@@ -118,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
                   : 'hover:bg-blue-800/60'
               }`}
             >
-              <Image className="w-5 h-5" /> Form Laporan Kerusakan
+              <FilePenLine className="w-5 h-5" /> Form Laporan Kerusakan
             </Link>
           </nav>
         </div>
@@ -171,7 +173,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
                 : 'hover:bg-blue-800/60'
             }`}
           >
-            <FileText className="w-5 h-5" /> Arsip Kematian
+            <FileArchive className="w-5 h-5" /> Arsip Kematian
           </Link>
 
           <Link
@@ -195,7 +197,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
                 : 'hover:bg-blue-800/60'
             }`}
           >
-            <Activity className="w-5 h-5" /> Laporan Warga
+            <ClipboardList className="w-5 h-5" /> Laporan Warga
           </Link>
 
           <Link
@@ -207,7 +209,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
                 : 'hover:bg-blue-800/60'
             }`}
           >
-            <Image className="w-5 h-5" /> Form Laporan Kerusakan
+            <FilePenLine className="w-5 h-5" /> Form Laporan Kerusakan
           </Link>
         </nav>
 

@@ -89,10 +89,11 @@ const NewsPage = () => {
         </div>
 
         {/* Tombol kembali */}
-        <div className="mt-10 text-center md:text-left">
+          {/* Tombol kembali */}
+        <div className="mt-8 text-center">
           <Link
             href="/home"
-            className="inline-flex items-center gap-1 text-blue-700 hover:text-blue-800 hover:underline font-medium text-sm"
+            className="text-blue-700 hover:underline font-medium text-sm"
           >
             ← Kembali ke Beranda
           </Link>

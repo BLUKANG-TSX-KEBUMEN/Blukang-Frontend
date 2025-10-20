@@ -126,11 +126,11 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
         </div>
 
         {/* Tombol Logout sticky di bawah */}
-        <div className="p-6 border-t border-blue-500/40 bg-blue-950/30 backdrop-blur-sm sticky bottom-0">
+        {/* <div className="p-6 border-t border-blue-500/40 bg-blue-950/30 backdrop-blur-sm sticky bottom-0">
           <button className="flex items-center justify-center gap-2 text-red-300 hover:text-red-400 transition-colors w-full font-medium">
             <LogOut className="w-5 h-5" /> Logout
           </button>
-        </div>
+        </div> */}
       </aside>
 
       {/* ===== SIDEBAR MOBILE ===== */}

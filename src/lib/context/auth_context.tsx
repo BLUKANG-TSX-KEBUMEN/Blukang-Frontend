@@ -61,10 +61,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
 
       toast.success("Logout berhasil", {
-        style: {
-          background: "var(--success)",
-          color: "var(--light)",
-        },
+        className: "bg-green-500 text-white",
       });
 
       router.push("/login");

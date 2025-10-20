@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Header from '@/components/header'
+import Link from 'next/link'
 
 const HomePage = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -17,7 +18,7 @@ const HomePage = () => {
           isOpen ? 'blur-sm md:ml-64' : 'md:ml-64'
         }`}
       >
-        {/* Tambahkan mt-[56px] untuk turun sesuai tinggi header bar */}
+        {/* Header Dashboard */}
         <div className="flex flex-col md:flex-row justify-between md:items-center items-start mb-8 space-y-4 md:space-y-0">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
 
@@ -30,12 +31,16 @@ const HomePage = () => {
 
         {/* Statistik Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {[{ title: 'Berita', value: 12 },
+          {[
+            { title: 'Berita', value: 12 },
             { title: 'Arsip Kematian', value: 38 },
             { title: 'Jumlah Laporan', value: 14 },
-            { title: 'Laporan Masuk', value: 12 }
+            { title: 'Laporan Masuk', value: 12 },
           ].map((item, i) => (
-            <div key={i} className="bg-white rounded-xl p-6 shadow-sm border hover:shadow-md transition-all">
+            <div
+              key={i}
+              className="bg-white rounded-xl p-6 shadow-sm border hover:shadow-md transition-all"
+            >
               <h3 className="text-gray-600 text-sm">{item.title}</h3>
               <p className="text-2xl font-bold mt-2">{item.value}</p>
             </div>
@@ -138,9 +143,14 @@ const HomePage = () => {
                 </div>
               ))}
             </div>
-            <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium">
+
+            {/* Tombol ke halaman berita */}
+            <Link
+              href="/news"
+              className="block w-full mt-4 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium text-center"
+            >
               Lihat Semua Berita →
-            </button>
+            </Link>
           </div>
 
           {/* Laporan Warga */}
@@ -166,7 +176,9 @@ const HomePage = () => {
                 >
                   <div>
                     <h3 className="font-medium text-gray-800">{item.title}</h3>
-                    <p className="text-sm text-gray-500">📍 Lokasi sekitar desa</p>
+                    <p className="text-sm text-gray-500">
+                      📍 Lokasi sekitar desa
+                    </p>
                   </div>
                   <span
                     className={`text-xs px-3 py-1 rounded-full ${
@@ -182,10 +194,15 @@ const HomePage = () => {
                 </div>
               ))}
             </div>
+
+            {/* Tombol ke halaman laporan */}
             <div className="flex gap-2 mt-4">
-              <button className="flex-1 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium">
+              <Link
+                href="/report"
+                className="flex-1 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium text-center"
+              >
                 Lihat Semua
-              </button>
+              </Link>
               <button className="flex-1 bg-gray-100 text-gray-800 py-2 rounded-lg font-medium">
                 Kirim Laporan
               </button>
@@ -216,9 +233,14 @@ const HomePage = () => {
                 </div>
               ))}
             </div>
-            <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium">
+
+            {/* Tombol ke halaman arsip kematian */}
+            <Link
+              href="/information"
+              className="block w-full mt-4 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium text-center"
+            >
               Lihat Semua Arsip Kematian →
-            </button>
+            </Link>
           </div>
         </section>
       </main>

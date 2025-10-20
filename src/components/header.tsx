@@ -77,13 +77,13 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
               <Newspaper className="w-5 h-5" /> Berita Terkini
             </Link>
 
-            {/* Laporan Warga */}
-            <a
-              href="#"
+            {/* 🔗 Laporan Warga → /report */}
+            <Link
+              href="/report"
               className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
             >
               <Activity className="w-5 h-5" /> Laporan Warga
-            </a>
+            </Link>
 
             {/* Form Laporan Kerusakan */}
             <a
@@ -146,13 +146,16 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
             <Newspaper className="w-5 h-5" /> Berita Terkini
           </Link>
 
-          <a
-            href="#"
+          {/* 🔗 Laporan Warga → /report */}
+          <Link
+            href="/report"
+            onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
           >
             <Activity className="w-5 h-5" /> Laporan Warga
-          </a>
+          </Link>
 
+          {/* Form Laporan Kerusakan */}
           <a
             href="#"
             className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"

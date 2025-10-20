@@ -53,6 +53,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
           </h1>
 
           <nav className="flex flex-col gap-3 text-sm">
+            {/* Dashboard */}
             <Link
               href="/home"
               className="flex items-center gap-3 bg-blue-800/70 hover:bg-blue-900 transition-colors rounded-lg px-3 py-2 font-semibold"
@@ -60,7 +61,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
               <Home className="w-5 h-5" /> Dashboard
             </Link>
 
-            {/* 🔗 Arsip Kematian menuju /information */}
+            {/* Arsip Kematian */}
             <Link
               href="/information"
               className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
@@ -68,13 +69,15 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
               <FileText className="w-5 h-5" /> Arsip Kematian
             </Link>
 
-            <a
-              href="#"
+            {/* 🔗 Berita Terkini → /news */}
+            <Link
+              href="/news"
               className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
             >
               <Newspaper className="w-5 h-5" /> Berita Terkini
-            </a>
+            </Link>
 
+            {/* Laporan Warga */}
             <a
               href="#"
               className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
@@ -82,6 +85,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
               <Activity className="w-5 h-5" /> Laporan Warga
             </a>
 
+            {/* Form Laporan Kerusakan */}
             <a
               href="#"
               className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
@@ -124,7 +128,7 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
             <Home className="w-5 h-5" /> Dashboard
           </Link>
 
-          {/* 🔗 Arsip Kematian menuju /information */}
+          {/* Arsip Kematian */}
           <Link
             href="/information"
             onClick={() => setIsOpen(false)}
@@ -133,12 +137,14 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
             <FileText className="w-5 h-5" /> Arsip Kematian
           </Link>
 
-          <a
-            href="#"
+          {/* 🔗 Berita Terkini → /news */}
+          <Link
+            href="/news"
+            onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 hover:bg-blue-800/60 rounded-lg px-3 py-2 transition-colors"
           >
             <Newspaper className="w-5 h-5" /> Berita Terkini
-          </a>
+          </Link>
 
           <a
             href="#"

@@ -5,3 +5,15 @@ interface AuthContextType {
   logout: () => void;
   loading: boolean;
 }
+
+interface Report {
+  id: number;
+  namaLengkap: string;
+  NIK: string;
+  title: string;
+  description: string;
+  coordinates: string;
+  files: string[];
+  status: string;
+  createdAt: string;
+}

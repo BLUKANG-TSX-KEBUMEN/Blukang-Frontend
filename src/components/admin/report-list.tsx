@@ -1,148 +1,127 @@
-// @ts-nocheck
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import {
-    Card,
-    CardBody,
-    Typography,
-    Button,
-    Dialog,
-    DialogBody,
-    DialogHeader,
-    DialogFooter,
-} from "@material-tailwind/react";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react';
+import { Spinner } from '../ui/shadcn-io/spinner';
+import { Card, CardContent } from '../ui/card';
+import { Badge } from '../ui/badge';
+import Image from 'next/image';
+import { Edit, Eye, Pencil, Trash, User, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Button } from '../ui/button';
+import UpdateReportDialog from './report-update';
 
-interface Report {
-    id: number;
-    namaLengkap: string;
-    title: string;
-    description: string;
-    coordinates: string;
-    files: string[];
-    status: string;
-    NIK: string;
-}
 
-const ReportList = () => {
+export default function Report() {
     const [reports, setReports] = useState<Report[]>([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState<string>("ALL");
-
+    const [filter, setFilter] = useState<string>('ALL');
+   
     // State untuk dialog
     const [openDialog, setOpenDialog] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [selectedReportId, setSelectedReportId] = useState<number | null>(null);
+    const [selectedReportStatus, setSelectedReportStatus] = useState<string>('');
 
-    const handleOpenDialog = (imageUrl: string) => {
-        setSelectedImage(imageUrl);
+    const handleOpenDialog = (files: string[]) => {
+        setSelectedFiles(files);
         setOpenDialog(true);
     };
 
-    const handleCloseDialog = () => {
-        setOpenDialog(false);
-        setSelectedImage(null);
+    const fetchReports = async () => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/reports`);
+            const json = await res.json();
+
+            const data = Array.isArray(json) ? json : json.data || [];
+            setReports(data);
+        } catch (error) {
+            console.error('Error fetching reports:', error);
+            setReports([]);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
-        const fetchReports = async () => {
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/reports`);
-                const data = await res.json();
-                setReports(data);
-            } catch (error) {
-                console.error("Error fetching reports:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchReports();
     }, []);
 
+
     const filteredReports =
-        filter === "ALL"
+        filter === 'ALL'
             ? reports
             : reports.filter((report) => report.status === filter);
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center p-10">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-3"></div>
-                    <Typography color="gray" className="text-sm">
-                        Loading data laporan...
-                    </Typography>
-                </div>
+            <div className="justify-center items-center p-15">
+                <Spinner variant='circle' />
             </div>
         );
     }
 
+
     return (
         <>
             <div className="flex flex-col h-full">
-                {/* Filter Buttons */}
+                {/* Filter Button */}
                 <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <div className="flex flex-wrap gap-2">
-                        {["ALL", "PENDING", "RESOLVED"].map((status) => (
+                        {['ALL', 'PENDING', 'IN_PROGRESS', 'COMPLETED'].map((status) => (
                             <button
                                 key={status}
                                 onClick={() => setFilter(status)}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === status
-                                    ? status === "ALL"
-                                        ? "bg-blue-600 text-white"
-                                        : status === "PENDING"
-                                            ? "bg-yellow-600 text-white"
-                                            : "bg-green-600 text-white"
-                                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+                                    ? status === 'ALL'
+                                        ? 'bg-blue-600 text-white'
+                                        : status === 'PENDING'
+                                            ? 'bg-yellow-600 text-white'
+                                            : status === 'IN_PROGRESS'
+                                                ? 'bg-purple-600 text-white'
+                                                : 'bg-green-600 text-white'
+                                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'
                                     }`}
                             >
-                                {status === "ALL"
+                                {status === 'ALL'
                                     ? `Semua (${reports.length})`
-                                    : status === "PENDING"
-                                        ? `Pending (${reports.filter((r) => r.status === "PENDING").length})`
-                                        : `Selesai (${reports.filter((r) => r.status === "RESOLVED").length})`}
+                                    : status === 'PENDING'
+                                        ? `Pending (${reports.filter((r) => r.status === 'PENDING').length})`
+                                        : status === 'IN_PROGRESS'
+                                            ? `Dalam Proses (${reports.filter((r) => r.status === 'IN_PROGRESS').length})`
+                                            : `Selesai (${reports.filter((r) => r.status === 'COMPLETED' || r.status === 'RESOLVED').length})`}
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* Report List */}
+                {/* Daftar Report */}
                 <div className="overflow-y-auto flex-1 p-4 space-y-4 max-h-[calc(100vh-280px)] lg:max-h-[calc(100vh-260px)]">
                     {filteredReports.length === 0 ? (
-                        <div className="text-center py-10">
-                            <Typography color="gray" className="text-sm">
-                                Tidak ada laporan dengan status {filter.toLowerCase()}
-                            </Typography>
+                        <div>
+                            <p>Tidak ada laporan yang tersedia.</p>
                         </div>
                     ) : (
                         filteredReports.map((report) => (
-                            <Card
-                                key={report.id}
-                                className="shadow-md hover:shadow-lg transition-shadow border border-gray-200"
-                            >
-                                <CardBody className="p-4">
+                            <Card key={report.id}>
+                                <CardContent className="p-4">
                                     <div className="flex items-start justify-between mb-3">
-                                        <Typography
-                                            variant="h6"
-                                            color="blue-gray"
-                                            className="font-semibold text-base line-clamp-2"
-                                        >
-                                            {report.title}
-                                        </Typography>
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-2 ${report.status === "PENDING"
-                                                ? "bg-yellow-100 text-yellow-800"
-                                                : "bg-green-100 text-green-800"
-                                                }`}
+                                        <h3 className="text-lg font-semibold">{report.title}</h3>
+                                        <Badge
+                                            className={cn(
+                                                'text-white',
+                                                report.status === 'PENDING' && 'bg-yellow-500',
+                                                report.status === 'IN_PROGRESS' && 'bg-blue-500',
+                                                report.status === 'COMPLETED' && 'bg-green-500',
+                                                report.status === 'DECLINED' && 'bg-red-500'
+                                            )}
                                         >
                                             {report.status}
-                                        </span>
+                                        </Badge>
                                     </div>
 
-                                    <Typography color="gray" className="text-sm mb-3 line-clamp-3">
-                                        {report.description}
-                                    </Typography>
+                                    <p className="text-sm mb-3 line-clamp-3">{report.description}</p>
 
                                     {report.files.length > 0 && (
                                         <div className="mb-3 relative h-40 w-full rounded-lg overflow-hidden bg-gray-100">
@@ -157,143 +136,90 @@ const ReportList = () => {
 
                                     <div className="space-y-2 mb-3 text-sm">
                                         <div className="flex items-center text-gray-600">
-                                            <svg
-                                                className="w-4 h-4 mr-2 flex-shrink-0"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                                />
-                                            </svg>
-                                            <span className="font-medium mr-1">Pelapor:</span>
-                                            <span>{report.namaLengkap}</span>
+                                            <User className="mr-2 h-4 w-4" />
+                                            Dilaporkan oleh: {report.namaLengkap} ({report.NIK})
                                         </div>
-
-                                        <div className="flex items-center text-gray-600">
-                                            <svg
-                                                className="w-4 h-4 mr-2 flex-shrink-0"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
-                                                />
-                                            </svg>
-                                            <span className="font-medium mr-1">NIK:</span>
-                                            <span>{report.NIK}</span>
-                                        </div>
-
-                                        <div className="flex items-start text-gray-600">
-                                            <svg
-                                                className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                                />
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                                />
-                                            </svg>
-                                            <span className="font-medium mr-1">Koordinat:</span>
-                                            <span className="text-xs break-all">
-                                                {report.coordinates}
-                                            </span>
+                                        <div className="text-gray-600">
+                                            Tanggal Laporan:{' '}
+                                            {new Date(report.createdAt).toLocaleDateString()}
                                         </div>
                                     </div>
 
-                                    {/* Tombol buka dialog */}
-                                    {report.files.length > 0 && (
+                                   
+
+                                    <div className='flex flex-row justify-start gap-5 mt-2'>
                                         <Button
-                                            color="blue"
-                                            size="sm"
-                                            className="w-full normal-case font-medium text-black"
-                                            onClick={() => handleOpenDialog(report.files[0])}
+                                            variant='outline'
+                                            className=' text-green-600 hover:text-green-700'
+                                            onClick={() => {
+                                                setSelectedReportId(report.id);
+                                                setSelectedReportStatus(report.status);
+                                                setOpenEditDialog(true);
+                                            }}
                                         >
-                                            <svg
-                                                className="w-4 h-4 mr-2 inline"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                                />
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                                />
-                                            </svg>
-                                            Lihat Gambar Lengkap
+                                            <Pencil className=" h-7 w-7" strokeWidth={3} />
+                                        </Button>
+                                        <Button
+                                            variant='outline'
+                                            className=' text-red-500 hover:text-red-600'
+                                            // onClick={() => {
+                                            //     setSelectedReportId(report.id);
+                                            //     setOpenEditDialog(true);
+                                            // }}
+                                        >
+                                            <Trash className=" h-7 w-7" strokeWidth={3} />
+                                        </Button>
+
+                                         {report.files.length > 1 && (
+                                        <Button
+                                            variant='outline'
+                                            onClick={() => handleOpenDialog(report.files)}
+                                            className="text-blue-600 hover:text-blue-700 flex items-center text-sm"
+                                        >
+                                            <Eye className="inline-block h-7 w-7" />
+                                           
                                         </Button>
                                     )}
-                                </CardBody>
+                                    </div>
+
+
+                                </CardContent>
                             </Card>
                         ))
                     )}
                 </div>
 
-                {/* Dialog Gambar */}
 
             </div>
+            <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                <DialogContent className="fixed z-[9999] max-w-3xl max-h-[80vh] overflow-y-auto background-white">
+                    <DialogHeader className="flex justify-between items-center">
+                        <DialogTitle>Lihat Gambar</DialogTitle>
 
-            <div className="flex justify-center">
-                <Dialog open={openDialog} handler={handleCloseDialog} size="lg" className="max-w-3xl">
-                    <DialogHeader className="justify-between items-center">
-                        <span></span>
-                        <button
-                            onClick={handleCloseDialog}
-                            className="text-gray-500 hover:text-gray-700 transition-colors"
-                        >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
                     </DialogHeader>
-                    <DialogBody className="flex justify-center items-center p-4 max-h-[70vh] overflow-auto">
-                        {selectedImage && (
-                            <div className="relative w-full h-full flex justify-center items-center">
-                                <Image
-                                    src={selectedImage}
-                                    alt="Gambar Lengkap"
-                                    width={700}
-                                    height={500}
-                                    className="rounded-lg object-contain max-w-full h-auto"
-                                    style={{ maxHeight: '60vh' }}
-                                />
-                            </div>
-                        )}
-                    </DialogBody>
 
-                </Dialog>
-            </div>
+                    <div className="flex flex-col gap-4">
+                        {selectedFiles.map((file, index) => (
+                            <Image
+                                key={index}
+                                src={file}
+                                alt={`Gambar ${index + 1}`}
+                                width={400}
+                                height={900}
+                            />
+                        ))}
+                    </div>
+                </DialogContent>
+            </Dialog>
 
+            <UpdateReportDialog
+                open={openEditDialog}
+                onOpenChange={setOpenEditDialog}
+                reportId={selectedReportId}
+                reportStatus={selectedReportStatus}
+                onSuccess={fetchReports}
+            />
         </>
 
-
     );
-};
-
-export default ReportList;
+}

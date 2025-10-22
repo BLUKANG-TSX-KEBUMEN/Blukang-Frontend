@@ -14,6 +14,6 @@ interface Report {
   description: string;
   coordinates: string;
   files: string[];
-  status: string;
+  status: "PENDING" | "IN_PROGRESS" | "COMPLETED" | "DECLINED" | string;
   createdAt: string;
 }

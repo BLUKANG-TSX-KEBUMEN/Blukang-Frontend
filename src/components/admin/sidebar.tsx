@@ -38,7 +38,6 @@ export function SidebarWithLogo() {
             name: 'Laporan',
             href: '/admin/dashboard',
             icon: InboxIcon,
-            badge: 14,
         },
         {
             name: 'Arsip Kematian',
@@ -49,21 +48,7 @@ export function SidebarWithLogo() {
             name: 'Berita',
             href: '/admin/news',
             icon: NewspaperIcon,
-        }, {
-            name: 'Settings',
-            href: '/settings',
-            icon: Cog6ToothIcon,
-        },
-        {
-            name: 'Settings',
-            href: '/settings',
-            icon: Cog6ToothIcon,
-        },
-        {
-            name: 'Settings',
-            href: '/settings',
-            icon: Cog6ToothIcon,
-        },
+        }, 
     ];
 
     const isActive = (href: string) => {
@@ -97,7 +82,7 @@ export function SidebarWithLogo() {
                                 <Link key={item.href} href={item.href}>
                                     <ListItem
                                         className={`gap-5 cursor-pointer transition-colors duration-200 ${active
-                                            ? 'bg-blue-50 text-blue-900'
+                                            ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white'
                                             : 'hover:bg-gray-100 text-gray-700'
                                             }`}
                                     >
@@ -105,17 +90,7 @@ export function SidebarWithLogo() {
                                             <Icon className="h-5 w-5" />
                                         </ListItemPrefix>
                                         {item.name}
-                                        {item.badge && (
-                                            <ListItemSuffix>
-                                                <Chip
-                                                    value={item.badge}
-                                                    size="sm"
-                                                    variant="ghost"
-                                                    color="blue-gray"
-                                                    className="rounded-full"
-                                                />
-                                            </ListItemSuffix>
-                                        )}
+                                       
                                     </ListItem>
                                 </Link>
                             );

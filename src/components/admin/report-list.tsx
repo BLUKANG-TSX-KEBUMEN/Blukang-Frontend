@@ -14,16 +14,7 @@ import {
 } from "@material-tailwind/react";
 import Image from "next/image";
 
-interface Report {
-    id: number;
-    namaLengkap: string;
-    title: string;
-    description: string;
-    coordinates: string;
-    files: string[];
-    status: string;
-    NIK: string;
-}
+
 
 const ReportList = () => {
     const [reports, setReports] = useState<Report[]>([]);

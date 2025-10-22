@@ -6,15 +6,6 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-interface Report {
-  id: number;
-  namaLengkap: string;
-  title: string;
-  description: string;
-  coordinates: string;
-  files: string[];
-  status: string;
-}
 
 const ReportMap = () => {
   const [reports, setReports] = useState<Report[]>([]);

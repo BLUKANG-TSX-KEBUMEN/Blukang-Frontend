@@ -41,7 +41,7 @@ export default function LoginPage() {
                 return
             }
 
-            const token = data.access_token
+            const token = data.data.access_token
             login(token)
             toast.success("Login berhasil")
             router.push("/admin/dashboard")

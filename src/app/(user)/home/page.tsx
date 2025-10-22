@@ -36,7 +36,7 @@ const HomePage = () => {
             Layanan Digital Desa Patukrejomulyo
           </h1>
           <p className="text-sm sm:text-base text-gray-100 max-w-2xl mx-auto">
-            Akses cepat informasi desa, laporan fasilitas umum, dan direktori UMKM lokal dalam satu platform.
+            Akses cepat informasi desa, laporan fasilitas umum, dan data Arsip Kematian.
           </p>
         </div>
       </section>
@@ -47,23 +47,6 @@ const HomePage = () => {
           isOpen ? 'blur-sm md:ml-64' : 'md:ml-64'
         }`}
       >
-        {/* Statistik Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {[
-            { title: 'Berita', value: 12 },
-            { title: 'Arsip Kematian', value: 38 },
-            { title: 'Jumlah Laporan', value: 14 },
-            { title: 'Laporan Masuk', value: 12 },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl p-6 shadow-sm border hover:shadow-md transition-all"
-            >
-              <h3 className="text-gray-600 text-sm">{item.title}</h3>
-              <p className="text-2xl font-bold mt-2">{item.value}</p>
-            </div>
-          ))}
-        </div>
 
         {/* ===== Berita Terkini ===== */}
         <section className="space-y-10">

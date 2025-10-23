@@ -28,14 +28,13 @@ export default function LoginPage() {
             const data = await res.json().catch(() => null)
 
             if (!res.ok) {
-                // Jika username/password salah atau tidak valid
                 if (res.status === 401) {
                     toast.error("Username atau password salah", {
-                        className: "bg-red-500 text-white",
+                       style: { backgroundColor: "#FD0000FF", color: "white" },
                     })
                 } else {
                     toast.error(data?.message || "Login gagal", {
-                        className: "bg-red-500 text-white",
+                       style: { backgroundColor: "#FD0000FF", color: "white" },
                     })
                 }
                 return
@@ -43,7 +42,9 @@ export default function LoginPage() {
 
             const token = data.data.access_token
             login(token)
-            toast.success("Login berhasil")
+            toast.success("Login berhasil", {
+                style: { backgroundColor: "#22c55e", color: "white" },
+            })
             router.push("/admin/dashboard")
         } catch (error) {
             console.error("Login failed:", error)
@@ -56,7 +57,16 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="w-full max-w-sm md:max-w-3xl justify-center mx-auto my-20">
+        <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
+            <div className="flex flex-col gap-3 mb-8">
+                <div className="text-5xl font-bold text-white">
+                    Admin Dashboard
+                </div>
+                <div className="text-lg font-medium text-[#8EC5FF]">
+                    Sistem Layanan Digital Desa Patukrejo
+                </div>
+            </div>
+
             <LoginForm
                 username={username}
                 password={password}
@@ -64,6 +74,7 @@ export default function LoginPage() {
                 setPassword={setPassword}
                 onLogin={handleLogin}
                 loading={loading}
+                className="w-full max-w-lg" 
             />
         </div>
     )

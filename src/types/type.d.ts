@@ -16,4 +16,5 @@ interface Report {
   files: string[];
   status: "PENDING" | "IN_PROGRESS" | "COMPLETED" | "DECLINED" | string;
   createdAt: string;
+  response?: string;
 }

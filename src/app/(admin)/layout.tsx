@@ -2,17 +2,17 @@
 
 import { SidebarWithLogo } from '@/components/admin/sidebar';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   useEffect(() => {
     const checkAdminAuth = async () => {
       const token = localStorage.getItem('accessToken');
-
       if (!token) {
         router.push('/login');
         toast.error('Token verification failed', {
@@ -50,7 +50,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       if (exp < now) {
         localStorage.removeItem('accessToken');
         router.push('/login');
-        toast.error('Token verification failed', {
+        toast.error('Token expired', {
           className: 'bg-red-500 text-white',
         });
         return;
@@ -67,7 +67,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       if (res.status !== 200) {
         localStorage.removeItem('accessToken');
         router.push('/');
-        toast.error('Token verification failed', {
+        toast.error('Token invalid', {
           className: 'bg-red-500 text-white',
         });
         return;
@@ -80,11 +80,17 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar sticky di kiri */}
-      <SidebarWithLogo />
+      {/* Sidebar */}
+      <SidebarWithLogo  />
 
-      {/* Main content di kanan */}
-      <main className="px-5 py-4 bg-gray-50 overflow-y-auto">
+      {/* Main Content */}
+      <main
+        // className={`transition-all duration-300 bg-gray-50 overflow-y-auto  w-full ${
+        //   collapsed ? 'ml-0' : 'ml-0'
+        // }`}
+
+        className='transition-all duration-300 bg-gray-50 overflow-y-auto  w-full'
+      >
         {children}
       </main>
     </div>

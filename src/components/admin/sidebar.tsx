@@ -1,76 +1,95 @@
-// @ts-nocheck
+//@ts-nocheck
 'use client';
-
-import React from 'react';
-import { usePathname } from 'next/navigation';
+import React, { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
     Card,
-    Typography,
     List,
     ListItem,
     ListItemPrefix,
-    ListItemSuffix,
-    Chip,
+    Typography,
 } from '@material-tailwind/react';
 import {
     InboxIcon,
-    UserCircleIcon,
-    Cog6ToothIcon,
-    PowerIcon,
     ArchiveBoxIcon,
     NewspaperIcon,
+    PowerIcon,
+    Bars3Icon,
+    FolderArrowDownIcon,
 } from '@heroicons/react/24/solid';
 import Image from 'next/image';
+import { Dialog, DialogContent, DialogHeader, DialogFooter } from '../ui/dialog';
+import { Button } from '../ui/button';
 
 interface NavItem {
     name: string;
     href: string;
     icon: React.ComponentType<{ className: string }>;
-    badge?: number;
 }
 
 export function SidebarWithLogo() {
     const pathname = usePathname();
+    const router = useRouter();
+    const [collapsed, setCollapsed] = useState(false);
+    const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
 
     const navItems: NavItem[] = [
-        {
-            name: 'Laporan',
-            href: '/admin/dashboard',
-            icon: InboxIcon,
-        },
-        {
-            name: 'Arsip Kematian',
-            href: '/admin/archive',
-            icon: ArchiveBoxIcon,
-        },
-        {
-            name: 'Berita',
-            href: '/admin/news',
-            icon: NewspaperIcon,
-        }, 
+        { name: 'Dashboard', href: '/admin/dashboard', icon: InboxIcon },
+        { name: 'Laporan Warga', href: '/admin/reports', icon: FolderArrowDownIcon },
+        { name: 'Arsip Kematian', href: '/admin/archive', icon: ArchiveBoxIcon },
+        { name: 'Berita', href: '/admin/news', icon: NewspaperIcon },
     ];
 
-    const isActive = (href: string) => {
-        return pathname === href || pathname.startsWith(href + '/');
+    const isActive = (href: string) =>
+        pathname === href || pathname.startsWith(href + '/');
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        router.push('/login');
     };
 
+    const toggleSidebar = () => setCollapsed(!collapsed);
+
     return (
-        <aside className="sticky top-0 h-screen">
-            <Card className="h-full w-[18rem] p-4 shadow-xl shadow-blue-gray-900/5 flex flex-col justify-between">
+        <aside
+            className={`sticky top-0 h-screen transition-all duration-300 ${
+                collapsed ? 'w-23' : 'w-72'
+            }`}
+        >
+            <Card className="h-full w-full p-4 shadow-xl shadow-blue-gray-900/5 flex flex-col justify-between">
                 {/* Header */}
                 <div>
-                    <div className="mb-2 flex items-center gap-4 p-4">
-                        <Image
-                            src="/hero-desa.jpg"
-                            alt="brand"
-                            className="h-8 w-8 rounded"
-                            width={32}
-                            height={32}
-                        />
-                        <Typography as="h5" color="blue-gray" className='font-bold'>
-                            Admin
-                        </Typography>
+                    <div
+                        className={`mb-4 flex items-center justify-between p-2 ${
+                            collapsed ? 'flex-col' : ''
+                        }`}
+                    >
+                        {!collapsed && (
+                            <div className="flex items-center gap-3">
+                                <Image
+                                    src="/hero-desa.jpg"
+                                    alt="brand"
+                                    className="h-8 w-8 rounded"
+                                    width={32}
+                                    height={32}
+                                />
+                                <Typography
+                                    as="h5"
+                                    color="blue-gray"
+                                    className="font-bold"
+                                >
+                                    Admin
+                                </Typography>
+                            </div>
+                        )}
+                        <button
+                            onClick={toggleSidebar}
+                            className="p-2 rounded hover:bg-gray-100"
+                            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                        >
+                            <Bars3Icon className="h-5 w-5 text-gray-700" />
+                        </button>
                     </div>
 
                     <List>
@@ -81,16 +100,16 @@ export function SidebarWithLogo() {
                             return (
                                 <Link key={item.href} href={item.href}>
                                     <ListItem
-                                        className={`gap-5 cursor-pointer transition-colors duration-200 ${active
-                                            ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white'
-                                            : 'hover:bg-gray-100 text-gray-700'
-                                            }`}
+                                        className={`flex items-center gap-4 cursor-pointer transition-all duration-200 ${
+                                            active
+                                                ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white'
+                                                : 'hover:bg-gray-100 text-gray-700'
+                                        }`}
                                     >
                                         <ListItemPrefix>
                                             <Icon className="h-5 w-5" />
                                         </ListItemPrefix>
-                                        {item.name}
-                                       
+                                        {!collapsed && <span>{item.name}</span>}
                                     </ListItem>
                                 </Link>
                             );
@@ -98,18 +117,35 @@ export function SidebarWithLogo() {
                     </List>
                 </div>
 
-                {/* Logout button */}
+                {/* Logout */}
                 <div className="p-2">
                     <ListItem
-                        className="gap-5 cursor-pointer transition-colors duration-200 hover:bg-red-50 hover:text-red-700 text-red-600 font-medium"
+                        onClick={() => setOpenLogoutDialog(true)}
+                        className="flex items-center gap-4 cursor-pointer transition-colors duration-200 hover:bg-red-50 hover:text-red-700 text-red-600 font-medium"
                     >
                         <ListItemPrefix>
                             <PowerIcon className="h-5 w-5 text-red-600" />
                         </ListItemPrefix>
-                        Log Out
+                        {!collapsed && 'Log Out'}
                     </ListItem>
                 </div>
             </Card>
+
+            {/* Dialog Logout */}
+            <Dialog open={openLogoutDialog} onOpenChange={setOpenLogoutDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <h3 className="text-center font-bold">Yakin ingin logout?</h3>
+                    </DialogHeader>
+                    
+                    <DialogFooter className="flex justify-center gap-2">
+                    
+                        <Button className="bg-red-500 text-white hover:bg-red-600 hover:text-white hover:scale-105" onClick={handleLogout}>
+                            Logout
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </aside>
     );
 }

@@ -57,9 +57,12 @@ const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
       {/* ===== SIDEBAR DESKTOP ===== */}
       <aside className="hidden md:flex flex-col bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white w-64 h-screen fixed left-0 top-[56px] shadow-xl z-40">
         <div className="flex-1 overflow-y-auto p-6 pb-24">
-          <h1 className="text-lg font-semibold mb-10 flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full border-2 border-white"></div>
-            Menu Utama
+          <h1 className="text-lg font-semibold mb-10 flex items-center gap-2 justify-center">
+          <img
+            src="https://patukrejo.kec-bonorowo.kebumenkab.go.id/assets/logo/kbm.png"
+            alt="Logo Desa Patukrejo"
+            className="w-25 h-25 object-contain mx-auto"
+          />
           </h1>
 
           <nav className="flex flex-col gap-3 text-sm">

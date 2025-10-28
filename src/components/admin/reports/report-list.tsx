@@ -13,6 +13,7 @@ import UpdateReportDialog from './report-update';
 import DeleteReportDialog from './report-delete';
 import { CopyButton } from '@/components/ui/shadcn-io/copy-button';
 import { toast } from 'sonner';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 interface ReportProps {
@@ -44,11 +45,49 @@ export default function Report({ reports, loading, fetchReports }: ReportProps) 
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <Spinner variant="circle" />
+            <div className="space-y-4 p-4">
+                {/* Skeleton filter bar */}
+                <div className="flex gap-2 mb-4">
+                    {[...Array(4)].map((_, i) => (
+                        <Skeleton key={i} className="h-9 w-[120px] rounded-lg" />
+                    ))}
+                </div>
+
+                {/* Skeleton cards */}
+                {[...Array(3)].map((_, i) => (
+                    <Card key={i} className="w-full">
+                        <CardContent className="p-4 space-y-3">
+                            {/* Title + Status */}
+                            <div className="flex items-center justify-between">
+                                <Skeleton className="h-5 w-1/3" />
+                                <Skeleton className="h-5 w-20 rounded-full" />
+                            </div>
+
+                            {/* Description */}
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-5/6" />
+                            <Skeleton className="h-4 w-2/3" />
+
+                            {/* Info section */}
+                            <div className="space-y-2 mt-4">
+                                <Skeleton className="h-4 w-1/2" />
+                                <Skeleton className="h-4 w-1/3" />
+                                <Skeleton className="h-4 w-2/5" />
+                            </div>
+
+                            {/* Action buttons */}
+                            <div className="flex gap-3 mt-4">
+                                {[...Array(3)].map((_, j) => (
+                                    <Skeleton key={j} className="h-9 w-9 rounded-md" />
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
-        );
+        )
     }
+
 
 
     return (

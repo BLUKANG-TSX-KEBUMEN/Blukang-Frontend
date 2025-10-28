@@ -18,3 +18,16 @@ interface Report {
   createdAt: string;
   response?: string;
 }
+
+interface DeathRecord {
+  id: number
+  nama: string
+  tanggal_lahir: string
+  tanggal_kematian: string
+  alamat: string
+  jumlah_keluarga: string
+  keterangan: string
+  foto: string
+  createdAt: string
+  updatedAt: string
+}

@@ -8,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 import { Spinner } from "../../ui/shadcn-io/spinner";
 import { Button } from "@/components/ui/button";
 import ReportDetail from "./report-detail";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 interface ReportProps {
@@ -65,12 +66,42 @@ export default function ReportMap({ reports, loading, fetchReports }: ReportProp
   const getMarkerIcon = (status: string) =>
     icons[status as keyof typeof icons] || icons.COMPLETED;
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Spinner variant="circle" />
+      <div className="relative w-full h-full p-4">
+        {/* Map skeleton area */}
+        <div className="relative h-[calc(100vh-140px)] w-full rounded-lg overflow-hidden">
+          <Skeleton className="absolute inset-0 h-full w-full rounded-lg" />
+
+          {/* Marker-like placeholders */}
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-8 h-8 bg-gray-300/70 rounded-full border border-white shadow-md animate-pulse"
+              style={{
+                top: `${20 + i * 12}%`,
+                left: `${30 + (i % 3) * 15}%`,
+              }}
+            />
+          ))}
+
+          {/* Floating loading card (simulasi popup laporan) */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[300px] rounded-xl bg-white shadow-md p-4 space-y-3 border border-gray-100 animate-in fade-in-50">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-4 w-1/2" />
+              <Skeleton className="h-4 w-20 rounded-full" />
+            </div>
+            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-3 w-4/5" />
+            <Skeleton className="h-24 w-full rounded-md" />
+            <div className="flex justify-end">
+              <Skeleton className="h-8 w-24 rounded-md" />
+            </div>
+          </div>
+        </div>
       </div>
     );
+  }
 
   if (error)
     return (

@@ -66,21 +66,21 @@ export function SidebarWithLogo() {
                         }`}
                     >
                         {!collapsed && (
-                            <div className="flex items-center gap-3">
+                            <div className="flex justify-end items-center gap-3">
                                 <Image
-                                    src="/hero-desa.jpg"
+                                    src="/admin.png"
                                     alt="brand"
-                                    className="h-8 w-8 rounded"
-                                    width={32}
-                                    height={32}
+                                    className="h-30 w-30 rounded ml-9"
+                                    width={100}
+                                    height={100}
                                 />
-                                <Typography
+                                {/* <Typography
                                     as="h5"
                                     color="blue-gray"
                                     className="font-bold"
                                 >
                                     Admin
-                                </Typography>
+                                </Typography> */}
                             </div>
                         )}
                         <button

@@ -1,8 +1,9 @@
 'use client'
 
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
+import { X } from 'lucide-react';
 import React from 'react'
 import { toast } from 'sonner';
 
@@ -65,12 +66,17 @@ export default function DeleteReportDialog({
             <DialogContent className='max-w-md'>
                 <DialogHeader>
                     <DialogTitle className='text-center'>Yakin ingin menghapus laporan ini?</DialogTitle>
+
                 </DialogHeader>
                 <div className="mb-4 text-center">
                     Laporan yang dihapus tidak dapat dikembalikan lagi.
                 </div>
-                <DialogFooter>
-
+                <DialogFooter className="flex justify-center gap-2">
+                    <DialogClose asChild>
+                        <Button variant='outline' className=" hover:scale-105" >
+                            Batal
+                        </Button>
+                    </DialogClose>
 
                     <Button
                         onClick={handleDelete}

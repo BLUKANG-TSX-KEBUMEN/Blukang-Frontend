@@ -25,7 +25,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Eye, Loader2, Plus, Search, X, ArrowUpDown, Trash, Pencil, FileSpreadsheet } from "lucide-react"
+import { Eye, Loader2, Plus, Search, X, ArrowUpDown, Trash, Pencil, FileSpreadsheet, EllipsisVertical } from "lucide-react"
 import Image from "next/image"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -49,6 +49,9 @@ import { Calendar } from "@/components/ui/calendar"
 import { format } from "date-fns"
 import { id } from "date-fns/locale"
 import { toast } from "sonner"
+import AddDeathDialog from "./add-death"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import DeleteDeathDialog from "./delete-death"
 
 
 export default function DeathArchiveTable() {
@@ -63,7 +66,11 @@ export default function DeathArchiveTable() {
     const [openExportDialog, setOpenExportDialog] = React.useState(false)
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(null)
 
-    // ✅ Fetch data dengan pagination dan sort
+    const [openDeathDialog, setOpenDeathDialog] = useState(false)
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+    const [selectedDeathId, setSelectedDeathId] = useState<number | null>(null)
+
+
     const fetchData = useCallback(async () => {
         setLoading(true)
         try {
@@ -122,7 +129,7 @@ export default function DeathArchiveTable() {
             const result = await res.json()
             console.log("Hasil fetch:", result)
 
-            // ✅ Karena struktur JSON berlapis, data aslinya ada di result.data.data.data
+           
             const deathData = result?.data?.data?.data || []
 
             if (!deathData.length) {
@@ -130,7 +137,6 @@ export default function DeathArchiveTable() {
                 return
             }
 
-            // ✅ Format data untuk diekspor ke Excel
             const exportData = deathData.map(
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (item: any, index: number) => ({
@@ -224,34 +230,53 @@ export default function DeathArchiveTable() {
             {
                 header: "Aksi",
                 cell: ({ row }) => (
-                    <div className="flex justify-between gap-1">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setSelectedImage(row.original.foto)}
-                            title="Lihat Foto"
-                            className="hover:bg-blue-50 hover:text-blue-500 text-blue-500"
-                        >
-                            <Eye className="h-5 w-5" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setSelectedImage(row.original.foto)}
-                            title="Hapus"
-                            className="hover:bg-red-50 hover:text-red-500 text-red-500"
-                        >
-                            <Trash className="h-5 w-5" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setSelectedImage(row.original.foto)}
-                            title="Edit"
-                            className="hover:bg-green-50 hover:text-green-500 text-green-500"
-                        >
-                            <Pencil className="h-5 w-5" />
-                        </Button>
+                    <div className="flex justify-center">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="hover:bg-gray-50">
+                                    <EllipsisVertical className="h-5 w-5 text-gray-600" />
+                                </Button>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent align="end" className="w-40">
+                                {/* Lihat Foto */}
+                                {row.original.foto && row.original.foto.trim() !== "" && (
+                                    <DropdownMenuItem
+                                        onClick={() => setSelectedImage(row.original.foto)}
+                                        className="text-blue-500 hover:text-blue-600 cursor-pointer"
+                                    >
+                                        <Eye className="h-4 w-4 mr-2 text-blue-600" />
+                                        Lihat Foto
+                                    </DropdownMenuItem>
+                                )}
+
+                                {/* Edit */}
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        setSelectedDeathId(row.original.id)
+                                        // setIsEditDialogOpen(true)
+                                    }}
+                                    className="text-green-500 hover:text-green-600 cursor-pointer"
+                                >
+                                    <Pencil className="h-4 w-4 mr-2 text-green-500" />
+                                    Edit
+                                </DropdownMenuItem>
+
+                                {/* Hapus */}
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        setSelectedDeathId(row.original.id)
+                                        setIsDeleteDialogOpen(true)
+                                    }}
+                                    className="text-red-500 hover:text-red-600 cursor-pointer"
+                                >
+                                    <Trash className="h-4 w-4 mr-2 text-red-500" />
+                                    Hapus
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+
                     </div>
 
                 ),
@@ -307,15 +332,19 @@ export default function DeathArchiveTable() {
                         </Select>
                     </div>
 
+
                     <div className="flex justify-between gap-3">
-                        <Button className="bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white hover:from-blue-700 hover:via-blue-800 hover:to-slate-800 hover:scale-105 transition-all duration-200">
+                        <Button
+                            className="bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white hover:from-blue-700 hover:via-blue-800 hover:to-slate-800 hover:scale-105 transition-all duration-200"
+                            onClick={() => setOpenDeathDialog(true)}
+                        >
                             <Plus className="h-4 w-4" strokeWidth={3} />
                         </Button>
-                
+
                         <Dialog open={openExportDialog} onOpenChange={setOpenExportDialog}>
                             <DialogTrigger asChild>
                                 <Button
-                                    
+
                                     className="flex items-center gap-2 text-white bg-green-500 hover:bg-green-400 hover:scale-105 transition-all duration-200"
                                 >
                                     <FileSpreadsheet className="h-4 w-4" />
@@ -530,6 +559,26 @@ export default function DeathArchiveTable() {
                     </div>
                 </DialogContent>
             </Dialog >
+
+
+            <AddDeathDialog
+                open={openDeathDialog}
+                onOpenChange={setOpenDeathDialog}
+                onSuccess={() => {
+                    setOpenDeathDialog(false)
+                    fetchData()
+                }}
+            />
+
+
+            {/* Dialog Hapus */}
+            <DeleteDeathDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+                deathId={selectedDeathId}
+                onSuccess={fetchData}
+            />
+
         </>
     )
 }

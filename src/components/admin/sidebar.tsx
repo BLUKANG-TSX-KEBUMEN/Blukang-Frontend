@@ -19,7 +19,7 @@ import {
     FolderArrowDownIcon,
 } from '@heroicons/react/24/solid';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogHeader, DialogFooter } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogClose } from '../ui/dialog';
 import { Button } from '../ui/button';
 
 interface NavItem {
@@ -139,7 +139,11 @@ export function SidebarWithLogo() {
                     </DialogHeader>
                     
                     <DialogFooter className="flex justify-center gap-2">
-                    
+                        <DialogClose asChild>
+                            <Button variant='outline' className=" hover:scale-105">
+                                Batal
+                            </Button>
+                        </DialogClose>
                         <Button className="bg-red-500 text-white hover:bg-red-600 hover:text-white hover:scale-105" onClick={handleLogout}>
                             Logout
                         </Button>

@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
@@ -17,7 +18,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Layanan Digital",
   description: "Dashboard Layanan Digital Desa",
+  icons: {
+    icon: "/admin.png", // untuk tab browser biasa
+    shortcut: "/admin.png", // fallback shortcut
+  },
 };
+
+
 
 
 export default function RootLayout({

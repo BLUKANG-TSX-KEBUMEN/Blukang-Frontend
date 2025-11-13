@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import Header from '../../../components/header' // Pastikan path sesuai lokasi Header.tsx
 import Link from 'next/link'
 
 const NewsPage = () => {
@@ -44,7 +43,6 @@ const NewsPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Header */}
-      <Header isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {/* Konten utama */}
       <main className="flex flex-col flex-1 mt-[64px] md:ml-64 px-4 sm:px-6 lg:px-10 py-8">

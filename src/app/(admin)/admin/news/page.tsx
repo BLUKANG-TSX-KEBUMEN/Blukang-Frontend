@@ -2,7 +2,9 @@ import React from 'react'
 
 const NewsAdmin = () => {
   return (
-    <div>NewsAdmin</div>
+    <div className='min-h-[calc(100vh-100px)]'>
+
+    </div>
   )
 }
 

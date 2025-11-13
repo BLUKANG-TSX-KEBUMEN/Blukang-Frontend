@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "m.media-amazon.com",
+        hostname: "patukrejo.kec-bonorowo.kebumenkab.go.id",
         port: "",
       },
       {

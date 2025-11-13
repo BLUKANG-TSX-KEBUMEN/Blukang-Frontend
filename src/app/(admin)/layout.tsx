@@ -5,9 +5,29 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  const [loading, setLoading] = useState(false);
+// Skeleton Loading Component
+const SidebarSkeleton = () => (
+  <div className="w-64 bg-gray-100 p-4 h-screen animate-pulse">
+    <div className="h-35 bg-gray-300 rounded mb-6" />
+    {[...Array(6)].map((_, i) => (
+      <div key={i} className="h-9 bg-gray-300 rounded mb-3" />
+    ))}
+  </div>
+);
 
+const MainSkeleton = () => (
+  <div className="flex-1 p-6 bg-gray-50 animate-pulse">
+    <div className="h-8 w-1/3 bg-gray-300 rounded mb-6" />
+    {/* {[...Array(5)].map((_, i) => (
+      <div key={i} className="h-5 bg-gray-200 rounded mb-3" />
+    ))} */}
+    <div className="h-64 bg-gray-200 rounded mt-6" />
+    <div className="h-64 bg-gray-200 rounded mt-6" />
+  </div>
+);
+
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -21,7 +41,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         return;
       }
 
-      setLoading(true);
       function parseJwt(token: string) {
         try {
           const base64Url = token.split('.')[1];
@@ -75,23 +94,18 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
       setLoading(false);
     };
+
     checkAdminAuth();
   }, [router]);
 
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <SidebarWithLogo  />
+      {loading ? <SidebarSkeleton /> : <SidebarWithLogo />}
 
       {/* Main Content */}
-      <main
-        // className={`transition-all duration-300 bg-gray-50 overflow-y-auto  w-full ${
-        //   collapsed ? 'ml-0' : 'ml-0'
-        // }`}
-
-        className='transition-all duration-300 bg-gray-50 overflow-y-auto  w-full'
-      >
-        {children}
+      <main className="transition-all duration-300 bg-gray-50 overflow-y-auto w-full">
+        {loading ? <MainSkeleton /> : children}
       </main>
     </div>
   );

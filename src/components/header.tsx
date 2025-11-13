@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -8,229 +8,178 @@ import {
   FileArchive,
   Newspaper,
   ClipboardList,
-  Send,
+  FilePenLine,
   Menu,
   X,
-  LogOut,
-  FilePenLine,
 } from 'lucide-react'
+import Image from 'next/image'
 
 interface HeaderProps {
-  isOpen: boolean
-  setIsOpen: (open: boolean) => void
+  isMenuOpen: boolean
+  setIsMenuOpen: (open: boolean) => void
 }
 
-const Header: React.FC<HeaderProps> = ({ isOpen, setIsOpen }) => {
-  const pathname = usePathname()
+// Define the menu items
+const menuItems = [
+  { href: '/home', icon: Home, label: 'Beranda' },
+  { href: '/news', icon: Newspaper, label: 'Berita Terkini' },
+  { href: '/report', icon: ClipboardList, label: 'Laporan Warga' },
+  { href: '/report/form', icon: FilePenLine, label: 'Buat Laporan' },
+]
 
-  // Fungsi bantu: menentukan apakah menu aktif
+const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
+  const pathname = usePathname()
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  // Detect scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const isActive = (path: string) => pathname === path
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
     <>
-      {/* ===== 🔵 HEADER BAR ATAS ===== */}
-      <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-700 via-blue-800 to-black text-white flex items-center justify-between px-4 md:px-8 py-3 shadow-md z-50">
-        {/* Tombol Hamburger (mobile only) */}
-        <button
-          className="flex items-center gap-2 md:hidden"
-          onClick={() => setIsOpen(true)}
-        >
-          <Menu className="w-6 h-6" />
-        </button>
+      {/* ===== HEADER PORTAL PENGADUAN ===== */}
+      <header
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled || isMenuOpen
+            ? 'bg-white/95 backdrop-blur-md shadow-lg '
+            : 'bg-transparent'
+          }`}
+      >
+        {/* Main Header Bar */}
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 md:py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo & Brand */}
+            <Link href="/home" className="flex items-center gap-3 group">
+              <Image
+                src="https://patukrejo.kec-bonorowo.kebumenkab.go.id/assets/logo/kbm.png"
+                alt="Logo Desa Patukrejo"
+                className="w-10 h-10 md:w-12 md:h-12 object-contain transition-transform group-hover:scale-105"
+                width={48}
+                height={48}
+              />
+              <div className="flex flex-col">
+                <h1
+                  className={`text-base md:text-xl font-bold transition-colors duration-300 ${isScrolled || isMenuOpen ? 'text-gray-800' : 'text-white drop-shadow-lg'
+                    }`}
+                >
+                  Patukrejomulyo
+                </h1>
+                <p
+                  className={`text-xs transition-colors duration-300 ${isScrolled || isMenuOpen ? 'text-gray-600' : 'text-white/90 drop-shadow'
+                    }`}
+                >
+                  Layanan Pengaduan Digital
+                </p>
+              </div>
+            </Link>
 
-        {/* Judul */}
-        <div className="flex flex-col leading-tight text-sm md:text-base text-center md:text-left">
-          <span className="font-semibold">Layanan Digital</span>
-          <span className="font-semibold">Desa Patukrejomulyo</span>
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-1">
+              <Link
+                href="/home"
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${isActive('/home')
+                    ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white shadow-md'
+                    : isScrolled
+                      ? 'text-gray-700 hover:bg-gray-100'
+                      : 'text-white hover:bg-white/20 backdrop-blur-sm'
+                  }`}
+              >
+                <Home className="w-4 h-4" />
+                Beranda
+              </Link>
+
+              <Link
+                href="/news"
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${isActive('/news')
+                    ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white shadow-md'
+                    : isScrolled
+                      ? 'text-gray-700 hover:bg-gray-100'
+                      : 'text-white hover:bg-white/20 backdrop-blur-sm'
+                  }`}
+              >
+                <Newspaper className="w-4 h-4" />
+                Berita
+              </Link>
+
+              <Link
+                href="/report"
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${isActive('/report')
+                    ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white shadow-md'
+                    : isScrolled
+                      ? 'text-gray-700 hover:bg-gray-100'
+                      : 'text-white hover:bg-white/20 backdrop-blur-sm'
+                  }`}
+              >
+                <ClipboardList className="w-4 h-4" />
+                Laporan
+              </Link>
+
+              <Link
+                href="/report/form"
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all  ${isActive('/report/form')
+                    ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white shadow-md'
+                    : isScrolled
+                      ? 'text-gray-700 hover:bg-gray-100'
+                      : 'text-white hover:bg-white/20 backdrop-blur-sm'
+                  }`}
+              >
+                <FilePenLine className="w-4 h-4" />
+                Buat Laporan
+              </Link>
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className={`lg:hidden p-2 rounded-lg transition-all ${isScrolled || isMenuOpen
+                  ? 'text-gray-700 hover:bg-gray-100'
+                  : 'text-white hover:bg-white/20 backdrop-blur-sm'
+                }`}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu-dropdown"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
-        {/* Tombol Lapor */}
-        <Link
-          href="/report/form"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-1.5 rounded-lg font-medium shadow-sm transition-all flex items-center gap-2"
+        {/* ===== MOBILE DROPDOWN MENU ===== */}
+        <div
+          id="mobile-menu-dropdown"
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen border-t border-gray-200' : 'max-h-0'
+            }`}
         >
-          <Send className="w-4 h-4" />
-          Lapor
-        </Link>
-      </header>
-
-      {/* ===== SIDEBAR DESKTOP ===== */}
-      <aside className="hidden md:flex flex-col bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white w-64 h-screen fixed left-0 top-[56px] shadow-xl z-40">
-        <div className="flex-1 overflow-y-auto p-6 pb-24">
-          <h1 className="text-lg font-semibold mb-10 flex items-center gap-2 justify-center">
-          <img
-            src="https://patukrejo.kec-bonorowo.kebumenkab.go.id/assets/logo/kbm.png"
-            alt="Logo Desa Patukrejo"
-            className="w-25 h-25 object-contain mx-auto"
-          />
-          </h1>
-
-          <nav className="flex flex-col gap-3 text-sm">
-            {/* Dashboard */}
-            <Link
-              href="/home"
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 font-semibold transition-all duration-200 ${
-                isActive('/home')
-                  ? 'bg-blue-900 shadow-inner'
-                  : 'hover:bg-blue-800/60'
-              }`}
-            >
-              <Home className="w-5 h-5" /> Dashboard
-            </Link>
-
-            {/* Arsip Kematian */}
-            <Link
-              href="/information"
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-                isActive('/information')
-                  ? 'bg-blue-900 shadow-inner'
-                  : 'hover:bg-blue-800/60'
-              }`}
-            >
-              <FileArchive className="w-5 h-5" /> Arsip Kematian
-            </Link>
-
-            {/* Berita Terkini */}
-            <Link
-              href="/news"
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-                isActive('/news')
-                  ? 'bg-blue-900 shadow-inner'
-                  : 'hover:bg-blue-800/60'
-              }`}
-            >
-              <Newspaper className="w-5 h-5" /> Berita Terkini
-            </Link>
-
-            {/* Laporan Warga */}
-            <Link
-              href="/report"
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-                isActive('/report')
-                  ? 'bg-blue-900 shadow-inner'
-                  : 'hover:bg-blue-800/60'
-              }`}
-            >
-              <ClipboardList className="w-5 h-5" /> Laporan Warga
-            </Link>
-
-            {/* Form Laporan Kerusakan */}
-            <Link
-              href="/report/form"
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-                isActive('/report/form')
-                  ? 'bg-blue-900 shadow-inner'
-                  : 'hover:bg-blue-800/60'
-              }`}
-            >
-              <FilePenLine className="w-5 h-5" /> Form Laporan Kerusakan
-            </Link>
+          <nav className="flex flex-col bg-white/95 backdrop-blur-md p-2">
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all text-sm ${isActive(item.href)
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+              >
+                <item.icon className="w-5 h-5" />
+                <span>{item.label}</span>
+              </Link>
+            ))}
           </nav>
         </div>
-
-        {/* Tombol Logout sticky di bawah */}
-        {/* <div className="p-6 border-t border-blue-500/40 bg-blue-950/30 backdrop-blur-sm sticky bottom-0">
-          <button className="flex items-center justify-center gap-2 text-red-300 hover:text-red-400 transition-colors w-full font-medium">
-            <LogOut className="w-5 h-5" /> Logout
-          </button>
-        </div> */}
-      </aside>
-
-      {/* ===== SIDEBAR MOBILE ===== */}
-      <div
-        className={`fixed top-0 left-0 h-full bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white 
-        w-64 p-6 flex flex-col justify-between rounded-r-3xl shadow-lg transition-transform duration-300 z-50
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}
-      >
-        {/* Header Sidebar Mobile */}
-        <div className="flex justify-between items-center mb-8 mt-2">
-          <h1 className="text-lg font-semibold flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full border-2 border-white"></div>
-            Menu
-          </h1>
-          <button onClick={() => setIsOpen(false)}>
-            <X className="w-6 h-6 text-white" />
-          </button>
-        </div>
-
-        {/* Menu Mobile */}
-        <nav className="flex flex-col gap-5 text-sm flex-grow overflow-y-auto">
-          <Link
-            href="/home"
-            onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-              isActive('/home')
-                ? 'bg-blue-900 shadow-inner'
-                : 'hover:bg-blue-800/60'
-            }`}
-          >
-            <Home className="w-5 h-5" /> Dashboard
-          </Link>
-
-          <Link
-            href="/information"
-            onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-              isActive('/information')
-                ? 'bg-blue-900 shadow-inner'
-                : 'hover:bg-blue-800/60'
-            }`}
-          >
-            <FileArchive className="w-5 h-5" /> Arsip Kematian
-          </Link>
-
-          <Link
-            href="/news"
-            onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-              isActive('/news')
-                ? 'bg-blue-900 shadow-inner'
-                : 'hover:bg-blue-800/60'
-            }`}
-          >
-            <Newspaper className="w-5 h-5" /> Berita Terkini
-          </Link>
-
-          <Link
-            href="/report"
-            onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-              isActive('/report')
-                ? 'bg-blue-900 shadow-inner'
-                : 'hover:bg-blue-800/60'
-            }`}
-          >
-            <ClipboardList className="w-5 h-5" /> Laporan Warga
-          </Link>
-
-          <Link
-            href="/report/form"
-            onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200 ${
-              isActive('/report/form')
-                ? 'bg-blue-900 shadow-inner'
-                : 'hover:bg-blue-800/60'
-            }`}
-          >
-            <FilePenLine className="w-5 h-5" /> Form Laporan Kerusakan
-          </Link>
-        </nav>
-
-        {/* Tombol Logout */}
-        <div className="border-t border-blue-500/40 pt-4">
-          <button className="flex items-center gap-2 text-red-300 hover:text-red-400 w-full justify-center font-medium">
-            <LogOut className="w-5 h-5" /> Logout
-          </button>
-        </div>
-      </div>
-
-      {/* ===== OVERLAY ===== */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
-          onClick={() => setIsOpen(false)}
-        ></div>
-      )}
+      </header>
     </>
   )
 }

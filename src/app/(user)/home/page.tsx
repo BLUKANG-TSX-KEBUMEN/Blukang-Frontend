@@ -1,22 +1,18 @@
 'use client'
 
 import React, { useState } from 'react'
-import Header from '@/components/header'
 import Link from 'next/link'
 import Image from 'next/image'
+import ReportList from '@/components/report-list'
 
 const HomePage = () => {
-  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      {/* ===== Header & Sidebar ===== */}
-      <Header isOpen={isOpen} setIsOpen={setIsOpen} />
-
       {/* ===== Hero Section ===== */}
       <section
         className="relative w-full flex items-center justify-center text-center text-white"
-        style={{ marginTop: '56px', minHeight: '300px' }}
+        style={{  minHeight: '700px' }}
       >
         {/* Background Image */}
         <Image
@@ -29,23 +25,19 @@ const HomePage = () => {
 
         {/* Overlay Text */}
         <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4 py-10">
-          <span className="inline-block bg-blue-600/90 text-xs md:text-sm font-medium px-3 py-1 rounded-full mb-3">
-            Portal Resmi Desa
-          </span>
+
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-tight">
             Layanan Digital Desa Patukrejomulyo
           </h1>
           <p className="text-sm sm:text-base text-gray-100 max-w-2xl mx-auto">
-            Akses cepat informasi desa, laporan fasilitas umum, dan data Arsip Kematian.
+            Akses cepat informasi desa dan laporan fasilitas umum.
           </p>
         </div>
       </section>
 
       {/* ===== Main Content ===== */}
       <main
-        className={`flex-1 transition-all duration-300 overflow-y-auto p-6 md:p-10 ${
-          isOpen ? 'blur-sm md:ml-64' : 'md:ml-64'
-        }`}
+        className={`flex-1 transition-all duration-300 overflow-y-auto p-6 md:p-10 }`}
       >
 
         {/* ===== Berita Terkini ===== */}
@@ -97,38 +89,9 @@ const HomePage = () => {
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-gray-800">Laporan Warga</h2>
-              <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">7</span>
             </div>
 
-            <div className="space-y-4">
-              {[
-                { title: 'Jembatan Kayu Rapuh dan Berbahaya', status: 'Selesai' },
-                { title: 'Tempat Sampah Penuh dan Bau', status: 'Menunggu' },
-                { title: 'Kerusakan Lampu Jalan RT 01', status: 'Proses' },
-                { title: 'Saluran Air Tersumbat Sampah', status: 'Menunggu' },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-start justify-between p-3 border rounded-lg hover:bg-gray-50"
-                >
-                  <div>
-                    <h3 className="font-medium text-gray-800">{item.title}</h3>
-                    <p className="text-sm text-gray-500">📍 Lokasi sekitar desa</p>
-                  </div>
-                  <span
-                    className={`text-xs px-3 py-1 rounded-full ${
-                      item.status === 'Selesai'
-                        ? 'bg-green-100 text-green-700'
-                        : item.status === 'Proses'
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'bg-gray-100 text-gray-600'
-                    }`}
-                  >
-                    {item.status}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <ReportList />
 
             <div className="flex gap-2 mt-4">
               <Link
@@ -146,37 +109,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* ===== Arsip Kematian ===== */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Arsip Kematian</h2>
 
-            <div className="space-y-4">
-              {[1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 p-3 border rounded-lg hover:bg-gray-50"
-                >
-                  <div className="w-12 h-12 bg-gray-200 rounded-md" />
-                  <div className="text-sm text-gray-700">
-                    <p>Nama : xxxxxx</p>
-                    <p>Tempat Lahir : xxxxxx</p>
-                    <p>Tanggal Lahir : xxxxxx</p>
-                    <p>Tanggal Meninggal : xxxxxx</p>
-                    <p>Alamat : xxxxxx</p>
-                    <p>Jumlah Keluarga : xxxxxx</p>
-                    <p>Keterangan : xxxxxx</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <Link
-              href="/information"
-              className="block w-full mt-4 bg-gradient-to-r from-blue-600 to-black text-white py-2 rounded-lg font-medium text-center"
-            >
-              Lihat Semua Arsip Kematian →
-            </Link>
-          </div>
         </section>
       </main>
     </div>

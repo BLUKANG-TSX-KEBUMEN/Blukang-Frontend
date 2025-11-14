@@ -53,7 +53,6 @@ export default function UpdateReportDialog({
             });
 
             const data = await res.json();
-            console.log('Update response:', data);
             if (!res.ok) {
                 throw new Error('Gagal memperbarui laporan');
             }

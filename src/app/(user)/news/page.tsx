@@ -1,101 +1,163 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Skeleton } from "@/components/ui/skeleton"
+
+
+const truncateText = (text: string, maxLength: number) => {
+  if (!text) return ''
+  return text.length > maxLength ? text.substring(0, maxLength) + '...' : text
+}
 
 const NewsPage = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [beritaList, setBeritaList] = useState<News[]>([])
+  const [error, setError] = useState<string | null>(null)
 
-  // Data dummy berita (bisa diganti dari API)
-  const beritaList = [
-    {
-      judul: 'Pembangunan Gedung Baru SD Negeri Patukrejomulyo Dimulai',
-      isi: 'Pemerintah desa bersama komite sekolah memulai proyek pembangunan gedung baru.',
-      tanggal: '12 Oktober 2025',
-    },
-    {
-      judul: 'Perbaikan Jalan Lingkungan RT 03 Selesai Lebih Cepat',
-      isi: 'Pekerjaan pengaspalan jalan lingkungan RT 03 RW 01 telah selesai lebih cepat dari jadwal.',
-      tanggal: '9 Oktober 2025',
-    },
-    {
-      judul: 'Posyandu Balita Bulan Oktober Terlaksana dengan Lancar',
-      isi: 'Kegiatan Posyandu untuk balita di bulan Oktober berjalan dengan lancar di 5 lokasi di desa.',
-      tanggal: '7 Oktober 2025',
-    },
-    {
-      judul: 'Festival UMKM Desa Akan Digelar Bulan Depan',
-      isi: 'Pemerintah desa merencanakan Festival UMKM yang akan digelar di halaman balai desa pada tanggal 20 November 2025.',
-      tanggal: '5 Oktober 2025',
-    },
-    {
-      judul: 'Pelatihan Komputer Gratis untuk Remaja Desa',
-      isi: 'Karang Taruna bekerja sama dengan relawan IT mengadakan pelatihan komputer gratis untuk remaja desa setiap hari Sabtu.',
-      tanggal: '3 Oktober 2025',
-    },
-    {
-      judul: 'Musyawarah Rencana Pembangunan Desa 2026 Sukses Digelar',
-      isi: 'Musrenbangdes untuk tahun 2026 telah dilaksanakan dengan dihadiri 120 warga dari berbagai RT/RW. Warga mengusulkan berbagai program prioritas.',
-      tanggal: '1 Oktober 2025',
-    },
-  ]
+  useEffect(() => {
+    const fetchBerita = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/articles`)
+        const data = await res.json()
+        setBeritaList(data.data || [])
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.error(err)
+        setError(err.message || 'Gagal memuat data berita')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchBerita()
+  }, [])
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    )
+  }
+
+
+
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header */}
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Hero Section */}
+      <section
+        className="relative w-full flex items-center justify-center text-center text-white"
+        style={{ minHeight: '300px' }}
+      >
+        <Image
+          src="/hero-desa.jpg"
+          alt="Hero Image Desa Patukrejomulyo"
+          fill
+          className="object-cover brightness-[0.55]"
+          priority
+        />
 
-      {/* Konten utama */}
-      <main className="flex flex-col flex-1 mt-[64px] md:ml-64 px-4 sm:px-6 lg:px-10 py-8">
-        {/* Judul Halaman */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl md:text-3xl font-semibold text-gray-800">
-            Berita Terkini
+        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4 py-10">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+            Berita Terbaru
           </h1>
-          <span className="text-sm text-gray-600">
-            {beritaList.length} artikel
+          <p className="text-sm text-gray-200">
+            Informasi dan kegiatan terkini di Desa Patukrejomulyo
+          </p>
+        </div>
+      </section>
+
+      {/* Daftar Berita */}
+      <main className="flex flex-col flex-1 px-4 sm:px-6 lg:px-10 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <span className="text-sm text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
+            {loading ? '...' : `${beritaList.length} artikel`}
           </span>
         </div>
 
-        {/* Daftar Berita */}
-        <div className="flex flex-col gap-5">
-          {beritaList.map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all"
-            >
-              {/* Gambar Placeholder */}
-              <div className="w-full h-32 bg-gray-300" />
+        {/* Skeleton Loading */}
+        {loading ? (
+          <div className="flex flex-col gap-6">
+            {[...Array(3)].map((_, i) => (
+              <Card
+                key={i}
+                className="flex flex-col sm:flex-row w-full overflow-hidden shadow-sm"
+              >
+                <Skeleton className="w-full sm:w-1/3 h-56" />
+                <div className="flex flex-col justify-between flex-1 p-5 space-y-3">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6" />
+                  <Skeleton className="h-10 w-32 self-end mt-4" />
+                </div>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-6">
+            {beritaList.map((item) => (
+              <Card
+                key={item.id}
+                className="flex flex-col sm:flex-row w-full overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
+              >
+                {/* Gambar */}
+                <div className="relative w-full sm:w-1/3 h-56 sm:h-56">
+                  <Image
+                    src={item.imageArticle}
+                    alt={item.title}
+                    fill
+                    className="object-cover h-full rounded-r-xl"
+                    priority={false}
+                  />
+                </div>
 
-              {/* Konten berita */}
-              <div className="p-4 sm:p-6">
-                <h2 className="font-semibold text-gray-800 text-base sm:text-lg mb-1">
-                  {item.judul}
-                </h2>
-                <p className="text-sm text-gray-600 mb-3">{item.isi}</p>
-
-                <p className="text-xs text-gray-500 mb-3">{item.tanggal}</p>
-
-                <Link
-                  href="#"
-                  className="text-sm text-blue-700 hover:text-blue-800 font-medium inline-flex items-center gap-1"
-                >
-                  Baca selengkapnya →
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Tombol kembali */}
-          {/* Tombol kembali */}
-        <div className="mt-8 text-center">
-          <Link
-            href="/home"
-            className="text-blue-700 hover:underline font-medium text-sm"
-          >
-            ← Kembali ke Beranda
-          </Link>
-        </div>
+                {/* Teks */}
+                <div className="flex flex-col justify-between flex-1 p-5">
+                  <div>
+                    <CardHeader className="p-0">
+                      <CardTitle className="text-lg font-semibold line-clamp-2">
+                        {item.title}
+                      </CardTitle>
+                      <Accordion
+                        type="single"
+                        collapsible
+                        className="w-full"
+                      >
+                        <AccordionItem value="open">
+                          <AccordionTrigger className="text-sm text-gray-700 hover:no-underline">
+                            {truncateText(item.bodyArticle, 100)}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <p className="text-sm text-gray-600 whitespace-pre-line">
+                              {item.bodyArticle}
+                            </p>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    </CardHeader>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   )

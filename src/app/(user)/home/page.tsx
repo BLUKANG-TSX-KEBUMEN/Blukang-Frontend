@@ -1,18 +1,51 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import ReportList from '@/components/report-list'
+import { Card } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const HomePage = () => {
+
+  const [newsLoading, setNewsLoading] = useState(false)
+  const [newsData, setNewsData] = useState<News[]>([])
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setNewsLoading(true)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/articles`)
+        const data = await res.json()
+        setNewsData(data.data || [])
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        console.error('Error fetching news:', error)
+        setError(error.message || 'Gagal memuat data berita')
+      } finally {
+        setNewsLoading(false)
+      }
+    }
+    fetchNews()
+  }, [])
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       {/* ===== Hero Section ===== */}
       <section
         className="relative w-full flex items-center justify-center text-center text-white"
-        style={{  minHeight: '700px' }}
+        style={{ minHeight: '700px' }}
       >
         {/* Background Image */}
         <Image
@@ -46,36 +79,47 @@ const HomePage = () => {
           <div className="bg-white rounded-xl p-6 shadow-sm border">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-gray-800">Berita Terkini</h2>
-              <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">6</span>
             </div>
 
-            <div className="space-y-4">
-              {[
-                {
-                  title: 'Pembangunan Gedung Baru SD Negeri Patukrejomulyo Dimulai',
-                  date: '12 Oktober 2025',
-                },
-                {
-                  title: 'Perbaikan Jalan Lingkungan RT 03 Selesai Lebih Cepat',
-                  date: '9 Oktober 2025',
-                },
-                {
-                  title: 'Posyandu Balita Bulan Oktober Terlaksana dengan Lancar',
-                  date: '7 Oktober 2025',
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 p-3 border rounded-lg hover:bg-gray-50"
-                >
-                  <div className="w-12 h-12 bg-gray-200 rounded-md" />
-                  <div>
-                    <h3 className="font-medium text-gray-800">{item.title}</h3>
-                    <p className="text-sm text-gray-500">{item.date}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {newsLoading ? (
+              <div className='flex flex-col gap-6'>
+                {[...Array(3)].map((_, i) => (
+                  <Card
+                    key={i}
+                    className='flex flex-col sm:flex-row w-full overflow-hidden shadow-sm'
+                  >
+                    <Skeleton className="w-full sm:w-1/3 h-56" />
+                    <div className="flex flex-col justify-between flex-1 p-5 space-y-3">
+                      <Skeleton className="h-6 w-3/4" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-5/6" />
+                      <Skeleton className="h-10 w-32 self-end mt-4" />
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className='flex flex-col gap-6'>
+                {newsData.map((news, i) => (
+                  <Card
+                    key={i}
+                    className='flex flex-col sm:flex-row w-full overflow-hidden shadow-sm'
+                  >
+                    <Image
+                      src={news.imageArticle}
+                      alt={news.title}
+                      width={500}
+                      height={500}
+                      className="w-full sm:w-1/3 h-56 object-cover"
+                    />
+                    <div className="flex flex-col flex-1 p-5 space-y-3">
+                      <h3 className="text-lg font-semibold text-gray-800">{news.title}</h3>
+                      <p className="text-sm text-gray-600">{news.bodyArticle}</p>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
 
             <Link
               href="/news"

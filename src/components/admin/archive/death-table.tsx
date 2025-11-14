@@ -56,11 +56,11 @@ import DeleteDeathDialog from "./delete-death"
 
 export default function DeathArchiveTable() {
     const [data, setData] = useState<DeathRecord[]>([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [search, setSearch] = useState("")
     const [selectedImage, setSelectedImage] = useState<string | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
-    const [itemsPerPage, setItemsPerPage] = useState(5)
+    const [itemsPerPage, setItemsPerPage] = useState(50)
     const [totalData, setTotalData] = useState(0)
     const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("DESC")
     const [openExportDialog, setOpenExportDialog] = React.useState(false)

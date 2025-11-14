@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
       {/* ===== HEADER PORTAL PENGADUAN ===== */}
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled || isMenuOpen
-            ? 'bg-white/95 backdrop-blur-md shadow-lg '
+            ? 'bg-white backdrop-blur-md shadow-lg '
             : 'bg-transparent'
           }`}
       >
@@ -159,17 +159,17 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
         {/* ===== MOBILE DROPDOWN MENU ===== */}
         <div
           id="mobile-menu-dropdown"
-          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen border-t border-gray-200' : 'max-h-0'
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen ' : 'max-h-0'
             }`}
         >
-          <nav className="flex flex-col bg-white/95 backdrop-blur-md p-2">
+          <nav className="flex flex-col bg-white backdrop-blur-md p-2">
             {menuItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsMenuOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all text-sm ${isActive(item.href)
-                    ? 'bg-blue-600 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white shadow-md'
                     : 'text-gray-700 hover:bg-gray-100'
                   }`}
               >

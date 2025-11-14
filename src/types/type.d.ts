@@ -31,3 +31,22 @@ interface DeathRecord {
   createdAt: string
   updatedAt: string
 }
+
+interface News {
+  id: number;
+  title: string;
+  imageArticle: string;
+  bodyArticle: string;
+  
+}
+
+interface StatsResponse {
+  arsipKematian: { count: number }
+  articles: { count: number }
+  reports: {
+    all: number
+    pending: number
+    inProgress: number
+    completed: number
+  }
+}

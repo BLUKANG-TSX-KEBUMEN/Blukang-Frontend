@@ -92,7 +92,7 @@ export default function Report({ reports, loading, fetchReports }: ReportProps) 
 
     return (
         <>
-            <div className="relativeflex flex-col ">
+            <div className="relative flex flex-col ">
                 {/* Filter Button */}
                 <div className="p-4 border-b border-gray-200 bg-gray-50">
                     <div className="flex flex-wrap gap-2">
@@ -131,7 +131,7 @@ export default function Report({ reports, loading, fetchReports }: ReportProps) 
                         </div>
                     ) : (
                         filteredReports.map((report) => (
-                            <Card key={report.id} className="w-full">
+                            <Card key={report.id} className="w-full p-3">
                                 <CardContent className="px-4">
                                     <div className='flex items-center justify-end'>
 

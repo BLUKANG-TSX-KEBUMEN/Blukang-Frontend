@@ -40,7 +40,7 @@ export function SidebarWithLogo() {
         { name: 'Laporan Warga', href: '/admin/reports', icon: FolderArrowDownIcon },
         { name: 'Arsip Kematian', href: '/admin/archive', icon: ArchiveBoxIcon },
         { name: 'Berita', href: '/admin/news', icon: NewspaperIcon },
-        { name: 'Pesan Masuk', href: '/admin/chat', icon: ChatBubbleLeftRightIcon },
+        // { name: 'Pesan Masuk', href: '/admin/chat', icon: ChatBubbleLeftRightIcon },
     ];
 
     const isActive = (href: string) =>

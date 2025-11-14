@@ -23,7 +23,7 @@ export default function UserLayout({
         {children}
       </main>
 
-      <ChatPopover />
+      {/* <ChatPopover /> */}
     </div>
   );
 }

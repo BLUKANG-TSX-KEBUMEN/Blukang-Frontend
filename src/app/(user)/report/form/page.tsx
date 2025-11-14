@@ -19,13 +19,14 @@ import { Button } from '@/components/ui/button'
 import "leaflet/dist/leaflet.css";
 import { Spinner } from '@/components/ui/shadcn-io/spinner'
 import { MapIcon, MapPinIcon } from '@heroicons/react/24/solid'
+import Image from 'next/image'
+
 
 const MapContainer = dynamic(() => import('react-leaflet').then(m => m.MapContainer), { ssr: false })
 const TileLayer = dynamic(() => import('react-leaflet').then(m => m.TileLayer), { ssr: false })
 const Marker = dynamic(() => import('react-leaflet').then(m => m.Marker), { ssr: false })
 
 const ReportForm = () => {
-  const [isOpen, setIsOpen] = useState(false)
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
   const [showMapDialog, setShowMapDialog] = useState(false)
@@ -195,16 +196,31 @@ const ReportForm = () => {
   })
 
   return (
-    <div className="flex bg-gray-100 min-h-screen">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <section
+        className="relative w-full flex items-center justify-center text-center text-white"
+        style={{ minHeight: '300px' }}
+      >
+        <Image
+          src="/hero-desa.jpg"
+          alt="Hero Image Desa Patukrejomulyo"
+          fill
+          className="object-cover brightness-[0.55]"
+          priority
+        />
 
+        <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4 py-10">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+            Form Laporan Kerusakan Fasilitas Umum
+          </h1>
+          <p className="text-sm text-gray-200">
+                      Laporkan kerusakan atau keluhan fasilitas umum di desa kami. Tim kami akan menindaklanjuti secepatnya.
 
-      <main className={`flex-1 transition-all duration-300 overflow-y-auto p-6 md:p-10 mt-[56px] ${isOpen ? 'blur-sm md:ml-64' : 'md:ml-64'}`}>
-        <p className="text-xs text-gray-500 mb-1">Laporan Warga</p>
+          </p>
+        </div>
+      </section>
 
-        <h1 className="text-2xl font-semibold text-gray-800 mb-1">Form Laporan Kerusakan Fasilitas Umum</h1>
-        <p className="text-gray-600 text-sm mb-8">
-          Laporkan kerusakan atau keluhan fasilitas umum di desa kami. Tim kami akan menindaklanjuti secepatnya.
-        </p>
+      <main className='flex transition-all duration-300 overflow-y-auto p-6 justify-center'>
 
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-10 w-full max-w-5xl">
           {/* Nama */}
@@ -223,6 +239,7 @@ const ReportForm = () => {
           {/* NIK */}
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700 mb-1">NIK (Nomor Induk Kependudukan) <span className="text-red-500">*</span></label>
+            <label className='block text-xs font-medium text-gray-600 mb-1'>Contoh: 3273056010900009</label>
             <input
               type="text"
               value={nik}
@@ -333,7 +350,7 @@ const ReportForm = () => {
                 ) : (
                   <span className="flex items-center justify-center gap-2">
                     <MapPinIcon className="w-5 h-5 text-green-700" />
-                    Gunakan Lokasi Saya
+                     Lokasi Saya
                   </span>
                 )}
               </button>
@@ -363,11 +380,7 @@ const ReportForm = () => {
           </button>
         </form>
 
-        <div className="mt-8 text-center">
-          <Link href="/home" className="text-blue-700 hover:underline font-medium text-sm">
-            ← Kembali ke Beranda
-          </Link>
-        </div>
+
       </main>
 
       {/* Dialog Map */}

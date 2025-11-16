@@ -145,7 +145,7 @@ const HomePage = () => {
                 Lihat Semua
               </Link>
               <Link
-                href="/report/form"
+                href="/form"
                 className="flex-1 bg-gray-100 text-gray-800 py-2 rounded-lg font-medium text-center"
               >
                 Kirim Laporan

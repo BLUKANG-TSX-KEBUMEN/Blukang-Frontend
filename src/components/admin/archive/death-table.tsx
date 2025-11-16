@@ -25,7 +25,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Eye, Loader2, Plus, Search, X, ArrowUpDown, Trash, Pencil, FileSpreadsheet, EllipsisVertical } from "lucide-react"
+import { Eye, Plus, Search, X, ArrowUpDown, Trash, Pencil, FileSpreadsheet, EllipsisVertical } from "lucide-react"
 import Image from "next/image"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -65,6 +65,9 @@ export default function DeathArchiveTable() {
     const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("DESC")
     const [openExportDialog, setOpenExportDialog] = React.useState(false)
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(null)
+    const [sortBy, setSortBy] = useState<"tanggal_kematian" | "createdAt">("createdAt")
+
+
 
     const [openDeathDialog, setOpenDeathDialog] = useState(false)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -75,7 +78,7 @@ export default function DeathArchiveTable() {
         setLoading(true)
         try {
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/arsip-kematian?page=${currentPage}&limit=${itemsPerPage}&search=${encodeURIComponent(search)}&sortBy=tanggal_kematian&sortOrder=${sortOrder}`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/arsip-kematian?page=${currentPage}&limit=${itemsPerPage}&search=${encodeURIComponent(search)}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
                 {
                     method: "GET",
                     headers: {
@@ -85,11 +88,9 @@ export default function DeathArchiveTable() {
                 }
             )
 
-            console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/arsip-kematian?page=${currentPage}&limit=${itemsPerPage}&search=${encodeURIComponent(search)}&sortBy=tanggal_kematian&sortOrder=${sortOrder}`)
 
             if (!res.ok) throw new Error("Gagal mengambil data")
             const result = await res.json()
-            console.log(result)
 
             setData(result.data.data || [])
             setTotalData(result.data.total || 0)
@@ -99,7 +100,7 @@ export default function DeathArchiveTable() {
         } finally {
             setLoading(false)
         }
-    }, [currentPage, itemsPerPage, search, sortOrder])
+    }, [currentPage, itemsPerPage, search, sortOrder, sortBy])
 
     const fetchByDate = async () => {
         if (!selectedDate) {
@@ -129,7 +130,7 @@ export default function DeathArchiveTable() {
             const result = await res.json()
             console.log("Hasil fetch:", result)
 
-           
+
             const deathData = result?.data?.data?.data || []
 
             if (!deathData.length) {
@@ -180,19 +181,27 @@ export default function DeathArchiveTable() {
         fetchData()
     }, [fetchData])
 
-    const toggleSort = () => {
-        setSortOrder((prev) => (prev === "ASC" ? "DESC" : "ASC"))
+    const toggleSort = (column: "tanggal_kematian" | "createdAt") => {
+        if (sortBy === column) {
+            // Klik lagi di kolom yang sama -> toggle ASC-DESC
+            setSortOrder(prev => (prev === "ASC" ? "DESC" : "ASC"))
+        } else {
+            // Pindah kolom sort
+            setSortBy(column)
+            setSortOrder("ASC")
+        }
     }
+
 
 
 
 
     const columns = useMemo<ColumnDef<DeathRecord>[]>(
         () => [
-            {
-                header: "No",
-                cell: ({ row }) => (currentPage - 1) * itemsPerPage + row.index + 1,
-            },
+            // {
+            //     header: "No",
+            //     cell: ({ row }) => (currentPage - 1) * itemsPerPage + row.index + 1,
+            // },
             { accessorKey: "nama", header: "Nama" },
             {
                 accessorKey: "tanggal_lahir",
@@ -208,7 +217,7 @@ export default function DeathArchiveTable() {
                         <Button
                             variant="ghost"
                             size="sm"
-                            onClick={toggleSort}
+                            onClick={() => toggleSort("tanggal_kematian")}
                             className="h-6 w-6 p-0 hover:bg-gray-200"
                         >
                             <ArrowUpDown className="h-4 w-4" />
@@ -218,12 +227,25 @@ export default function DeathArchiveTable() {
                 cell: ({ row }) =>
                     new Date(row.original.tanggal_kematian).toLocaleDateString("id-ID"),
             },
+
             { accessorKey: "alamat", header: "Alamat" },
             { accessorKey: "jumlah_keluarga", header: "Jumlah Keluarga" },
             { accessorKey: "keterangan", header: "Keterangan" },
             {
                 accessorKey: "createdAt",
-                header: "Dibuat pada",
+                header: () => (
+                    <div className="flex items-center justify-center gap-1">
+                        <span>Dibuat pada</span>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleSort("createdAt")}
+                            className="h-6 w-6 p-0 hover:bg-gray-200"
+                        >
+                            <ArrowUpDown className="h-4 w-4" />
+                        </Button>
+                    </div>
+                ),
                 cell: ({ row }) =>
                     new Date(row.original.createdAt).toLocaleDateString("id-ID"),
             },
@@ -282,7 +304,7 @@ export default function DeathArchiveTable() {
                 ),
             },
         ],
-        [currentPage, itemsPerPage]
+        [currentPage, itemsPerPage, toggleSort]
     )
 
     const table = useReactTable({

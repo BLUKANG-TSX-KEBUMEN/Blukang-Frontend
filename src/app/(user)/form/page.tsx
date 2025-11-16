@@ -1,30 +1,21 @@
-'use client'
+"use client"
 
 import React, { useState } from 'react'
-import Header from '@/components/header'
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import { Icon } from 'leaflet'
+
 import { toast } from 'sonner'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-// @ts-expect-error leaflet
-import "leaflet/dist/leaflet.css";
+
 import { Spinner } from '@/components/ui/shadcn-io/spinner'
 import { MapIcon, MapPinIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
+import dynamic from 'next/dynamic';
 
 
-const MapContainer = dynamic(() => import('react-leaflet').then(m => m.MapContainer), { ssr: false })
-const TileLayer = dynamic(() => import('react-leaflet').then(m => m.TileLayer), { ssr: false })
-const Marker = dynamic(() => import('react-leaflet').then(m => m.Marker), { ssr: false })
+const MapPickerDialog = dynamic(() => import('@/components/map-picker'), {
+  ssr: false,
+});
+
+
+
 
 const ReportForm = () => {
   const [latitude, setLatitude] = useState('')
@@ -189,11 +180,7 @@ const ReportForm = () => {
   }
 
 
-  const customIcon = new Icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-  })
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -214,7 +201,7 @@ const ReportForm = () => {
             Form Laporan Kerusakan Fasilitas Umum
           </h1>
           <p className="text-sm text-gray-200">
-                      Laporkan kerusakan atau keluhan fasilitas umum di desa kami. Tim kami akan menindaklanjuti secepatnya.
+            Laporkan kerusakan atau keluhan fasilitas umum di desa kami. Tim kami akan menindaklanjuti secepatnya.
 
           </p>
         </div>
@@ -350,7 +337,7 @@ const ReportForm = () => {
                 ) : (
                   <span className="flex items-center justify-center gap-2">
                     <MapPinIcon className="w-5 h-5 text-green-700" />
-                     Lokasi Saya
+                    Lokasi Saya
                   </span>
                 )}
               </button>
@@ -384,57 +371,14 @@ const ReportForm = () => {
       </main>
 
       {/* Dialog Map */}
-      <Dialog open={showMapDialog} onOpenChange={setShowMapDialog}>
-        <DialogContent className="max-w-[95vw] md:max-w-4xl w-full p-0 gap-0" style={{ height: '85vh', maxHeight: '85vh' }}>
-          <div className="flex flex-col h-full">
-            <DialogHeader className="px-6 pt-6 pb-3 flex-shrink-0">
-              <DialogTitle>Pilih Lokasi di Peta</DialogTitle>
-              <DialogDescription>
-                Geser marker merah untuk memilih lokasi. Koordinat: {markerPos[0].toFixed(6)}, {markerPos[1].toFixed(6)}
-              </DialogDescription>
-            </DialogHeader>
+      <MapPickerDialog
+        open={showMapDialog}
+        onOpenChange={setShowMapDialog}
+        markerPos={markerPos}
+        setMarkerPos={setMarkerPos}
+        onSelect={handleSelectLocation}
+      />
 
-            <div className="flex-1 px-6 pb-4" style={{ minHeight: 0 }}>
-              <div className="w-full h-full rounded-lg overflow-hidden border border-gray-200">
-                <MapContainer
-                  // @ts-expect-error leaflet
-                  center={markerPos}
-                  zoom={15}
-                  scrollWheelZoom
-                  style={{ width: '100%', height: '100%' }}
-                  whenCreated={(map) => {
-                    setTimeout(() => map.invalidateSize(), 100)
-                  }}
-                >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    //@ts-expect-error leaflet attribution
-                    attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
-                  />
-                  <Marker
-                    position={markerPos}
-                    // @ts-expect-error leaflet
-                    icon={customIcon}
-                    draggable
-                    eventHandlers={{
-                      dragend: (e) => {
-                        const marker = e.target
-                        const position = marker.getLatLng()
-                        setMarkerPos([position.lat, position.lng])
-                      },
-                    }}
-                  />
-                </MapContainer>
-              </div>
-            </div>
-
-            <DialogFooter className="px-6 pb-6 flex-shrink-0 gap-2">
-              <Button type="button" variant="outline" onClick={() => setShowMapDialog(false)}>Batal</Button>
-              <Button type="button" onClick={handleSelectLocation}>Gunakan Lokasi Ini</Button>
-            </DialogFooter>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

@@ -228,7 +228,7 @@ export default function StatisticsSection() {
                         </div>
                         <Progress
                             value={(reports.pending / reports.all) * 100}
-                            className="h-3 bg-yellow-100"
+                            className="h-3 bg-yellow-100 "
                         />
                     </div>
 

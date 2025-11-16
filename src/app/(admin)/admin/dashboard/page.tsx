@@ -13,7 +13,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-4 overflow-y-auto">
+      <div className="p-4 ">
         <StatsSection />
       </div>
 

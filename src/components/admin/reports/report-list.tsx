@@ -53,7 +53,7 @@ export default function Report({ reports, loading, fetchReports }: ReportProps) 
                 </div>
 
                 {/* Skeleton cards */}
-                {[...Array(3)].map((_, i) => (
+                {[...Array(2)].map((_, i) => (
                     <Card key={i} className="w-full">
                         <CardContent className="p-4 space-y-3">
                             {/* Title + Status */}

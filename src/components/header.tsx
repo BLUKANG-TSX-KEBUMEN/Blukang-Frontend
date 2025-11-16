@@ -64,11 +64,11 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
             {/* Logo & Brand */}
             <Link href="/home" className="flex items-center gap-3 group">
               <Image
-                src="https://patukrejo.kec-bonorowo.kebumenkab.go.id/assets/logo/kbm.png"
+                src="/kebumen_logo.png"
                 alt="Logo Desa Patukrejo"
-                className="w-10 h-10 md:w-12 md:h-12 object-contain transition-transform group-hover:scale-105"
-                width={48}
-                height={48}
+                className="w-10 h-10 md:w-16 md:h-16 object-contain transition-transform group-hover:scale-105"
+                width={52}
+                height={52}
               />
               <div className="flex flex-col">
                 <h1

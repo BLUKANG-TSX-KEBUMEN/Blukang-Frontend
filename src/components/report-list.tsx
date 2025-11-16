@@ -239,7 +239,7 @@ const ReportList = () => {
             ))}
 
             <Dialog open={previewImgs.length > 0} onOpenChange={() => setPreviewImgs([])}>
-                <DialogContent className="max-w-4xl p-0 bg-transparent border-none shadow-none">
+                <DialogContent className="max-w-4xl p-0 bg-white border-none shadow-none">
                     <DialogClose
                         className="absolute top-3 right-4 z-50 bg-black/50 hover:bg-black/70 text-red-500 
                rounded-full p-2  transition backdrop-blur-md"

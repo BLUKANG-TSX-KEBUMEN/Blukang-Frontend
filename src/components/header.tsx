@@ -67,8 +67,8 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                 src="/kebumen_logo.png"
                 alt="Logo Desa Patukrejo"
                 className="w-10 h-10 md:w-16 md:h-16 object-contain transition-transform group-hover:scale-105"
-                width={52}
-                height={52}
+                width={100}
+                height={100}
               />
               <div className="flex flex-col">
                 <h1

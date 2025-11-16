@@ -1,5 +1,6 @@
 "use client";
 import ChatPopover from "@/components/chat";
+import Footer from "@/components/footer";
 import Header from "@/components/header";
 import React, { useState } from "react";
 
@@ -23,6 +24,7 @@ export default function UserLayout({
         {children}
       </main>
 
+      <Footer />
       {/* <ChatPopover /> */}
     </div>
   );

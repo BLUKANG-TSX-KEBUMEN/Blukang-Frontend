@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   Home,
-  FileArchive,
+
   Newspaper,
   ClipboardList,
   FilePenLine,
@@ -24,7 +24,7 @@ const menuItems = [
   { href: '/home', icon: Home, label: 'Beranda' },
   { href: '/news', icon: Newspaper, label: 'Berita Terkini' },
   { href: '/report', icon: ClipboardList, label: 'Laporan Warga' },
-  { href: '/report/form', icon: FilePenLine, label: 'Buat Laporan' },
+  { href: '/form', icon: FilePenLine, label: 'Buat Laporan' },
 ]
 
 const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
@@ -128,7 +128,7 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
               </Link>
 
               <Link
-                href="/report/form"
+                href="/form"
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all  ${isActive('/report/form')
                     ? 'bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white shadow-md'
                     : isScrolled

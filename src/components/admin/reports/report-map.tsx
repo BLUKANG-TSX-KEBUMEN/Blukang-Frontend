@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 //@ts-expect-error leaflet css
 import "leaflet/dist/leaflet.css";
-import { Spinner } from "../../ui/shadcn-io/spinner";
 import { Button } from "@/components/ui/button";
 import ReportDetail from "./report-detail";
 import { Skeleton } from "@/components/ui/skeleton";

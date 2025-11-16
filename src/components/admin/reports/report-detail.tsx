@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -10,7 +10,6 @@ import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import UpdateReportDialog from './report-update';
 import DeleteReportDialog from './report-delete';
 import { Pencil, Trash } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { CopyButton } from '@/components/ui/shadcn-io/copy-button';
 

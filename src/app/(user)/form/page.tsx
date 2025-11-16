@@ -44,30 +44,32 @@ const ReportForm = () => {
   };
 
 
-  // ✅ Request lokasi (harus dari user action)
   const requestLocation = () => {
-    if (!navigator.geolocation) {
-      toast.error('Browser Anda tidak mendukung geolokasi.')
-      return
-    }
+    return new Promise<void>((resolve, reject) => {
+      if (!navigator.geolocation) {
+        toast.error("Browser Anda tidak mendukung geolokasi.")
+        reject("Geolocation not supported")
+        return
+      }
 
-    setLoadingLocation(true)
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const { latitude, longitude } = pos.coords
-        setMarkerPos([latitude, longitude])
-        setLatitude(latitude.toFixed(6))
-        setLongitude(longitude.toFixed(6))
-        setLoadingLocation(false)
-      },
-      (error) => {
-        console.warn('Gagal mendapatkan lokasi:', error)
-        toast.error('Gagal mengambil lokasi. Pastikan GPS aktif dan izin lokasi diberikan.')
-        setLoadingLocation(false)
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-    )
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords
+          setMarkerPos([latitude, longitude])
+          setLatitude(latitude.toFixed(6))
+          setLongitude(longitude.toFixed(6))
+          resolve() // 🔥 baru selesai di sini
+        },
+        (error) => {
+          console.warn("Gagal mendapatkan lokasi:", error)
+          toast.error("Gagal mengambil lokasi. Pastikan GPS aktif dan izin lokasi diberikan.")
+          reject(error)
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      )
+    })
   }
+
 
   // ✅ Validasi NIK Indonesia (16 digit numerik)
   const validateNIK = (nik: string) => {
@@ -163,17 +165,13 @@ const ReportForm = () => {
   }
 
   const handleOpenMapDialog = async () => {
+    setLoadingLocation(true)
+
     try {
-      // Mulai proses pengambilan lokasi
-      setLoadingLocation(true)
-
-      // Jalankan request lokasi terlebih dahulu
-      await requestLocation()
-
-      // Jika berhasil, baru tampilkan dialog peta
-      setShowMapDialog(true)
+      await requestLocation()     // 🔥 benar-benar menunggu koordinat
+      setShowMapDialog(true)      // 🔥 map dibuka SETELAH koordinat baru didapat
     } catch (error) {
-      console.error('Gagal mendapatkan lokasi sebelum membuka peta:', error)
+      console.error("Gagal mendapatkan lokasi sebelum membuka peta:", error)
     } finally {
       setLoadingLocation(false)
     }

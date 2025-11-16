@@ -28,7 +28,7 @@ export default function StatisticsSection() {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/statistics`)
                 const data = await res.json()
 
-   
+
 
                 setStats(data.data)  // ← FIX DI SINI
             } catch (error) {
@@ -77,7 +77,7 @@ export default function StatisticsSection() {
 
 
     return (
-        <div className="space-y-8 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
+        <div className="space-y-4 bg-gradient-to-br from-slate-50 to-slate-100">
 
             {/* ========== GRID CARD ========= */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -229,6 +229,7 @@ export default function StatisticsSection() {
                         <Progress
                             value={(reports.pending / reports.all) * 100}
                             className="h-3 bg-yellow-100 "
+                            indicatorClassName="bg-yellow-500"
                         />
                     </div>
 
@@ -247,7 +248,9 @@ export default function StatisticsSection() {
                         <Progress
                             value={(reports.inProgress / reports.all) * 100}
                             className="h-3 bg-blue-100"
+                            indicatorClassName="bg-blue-500"
                         />
+
                     </div>
 
                     <div>
@@ -265,6 +268,7 @@ export default function StatisticsSection() {
                         <Progress
                             value={(reports.completed / reports.all) * 100}
                             className="h-3 bg-green-100"
+                            indicatorClassName="bg-green-500"
                         />
                     </div>
                 </div>

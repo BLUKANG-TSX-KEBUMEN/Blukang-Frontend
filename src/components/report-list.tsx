@@ -175,17 +175,17 @@ const ReportList = () => {
                             {/* Overlay blur + icon Eye */}
                             <div
                                 className="
-        absolute inset-0 rounded-md 
-        bg-black/40 
-        flex items-center justify-center
-        transition-all
+                                    absolute inset-0 rounded-md 
+                                    bg-black/40 
+                                    flex items-center justify-center
+                                    transition-all
 
-        opacity-100        /* MOBILE: selalu terlihat */
-        sm:opacity-0       /* DESKTOP: default hilang */
-        sm:group-hover:opacity-100  /* DESKTOP: muncul saat hover */
+                                    opacity-100        /* MOBILE: selalu terlihat */
+                                    sm:opacity-0       /* DESKTOP: default hilang */
+                                    sm:group-hover:opacity-100  /* DESKTOP: muncul saat hover */
 
-        backdrop-blur-sm
-    "
+                                    backdrop-blur-sm
+                                "
                             >
                                 <Eye className="text-white w-6 h-6" />
                             </div>

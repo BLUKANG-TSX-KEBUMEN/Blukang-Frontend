@@ -18,6 +18,8 @@ import {
     Bars3Icon,
     FolderArrowDownIcon,
     ChatBubbleLeftRightIcon,
+    PhotoIcon,
+
 } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogClose } from '../ui/dialog';
@@ -40,6 +42,7 @@ export function SidebarWithLogo() {
         { name: 'Laporan Warga', href: '/admin/reports', icon: FolderArrowDownIcon },
         { name: 'Arsip Kematian', href: '/admin/archive', icon: ArchiveBoxIcon },
         { name: 'Berita', href: '/admin/news', icon: NewspaperIcon },
+        { name: 'Konten', href: '/admin/slider', icon: PhotoIcon },
         // { name: 'Pesan Masuk', href: '/admin/chat', icon: ChatBubbleLeftRightIcon },
     ];
 

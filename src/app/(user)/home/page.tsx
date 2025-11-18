@@ -6,6 +6,7 @@ import Image from 'next/image'
 import ReportList from '@/components/report-list'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import HeroCarousel from '@/components/image-carousel'
 
 const HomePage = () => {
 
@@ -43,11 +44,10 @@ const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       {/* ===== Hero Section ===== */}
-      <section
+      {/* <section
         className="relative w-full flex items-center justify-center text-center text-white"
         style={{ minHeight: '700px' }}
       >
-        {/* Background Image */}
         <Image
           src="/hero-desa.jpg"
           alt="Hero Image Desa Patukrejomulyo"
@@ -56,7 +56,6 @@ const HomePage = () => {
           priority
         />
 
-        {/* Overlay Text */}
         <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4 py-10">
 
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-tight">
@@ -66,7 +65,8 @@ const HomePage = () => {
             Akses cepat informasi desa dan laporan fasilitas umum.
           </p>
         </div>
-      </section>
+      </section> */}
+      <HeroCarousel />
 
       {/* ===== Main Content ===== */}
       <main

@@ -70,15 +70,15 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
                 width={100}
                 height={100}
               />
-              <div className="flex flex-col">
+              <div className="flex flex-col rounded-md backdrop-blur-md p-2">
                 <h1
-                  className={`text-base md:text-xl font-bold transition-colors duration-300 ${isScrolled || isMenuOpen ? 'text-gray-800' : 'text-white drop-shadow-lg'
+                  className={`text-base md:text-xl font-bold  transition-colors duration-300 ${isScrolled || isMenuOpen ? 'text-gray-800' : 'text-white drop-shadow-lg'
                     }`}
                 >
                   Patukrejomulyo
                 </h1>
                 <p
-                  className={`text-xs transition-colors duration-300 ${isScrolled || isMenuOpen ? 'text-gray-600' : 'text-white/90 drop-shadow'
+                  className={`text-xs  transition-colors duration-300 ${isScrolled || isMenuOpen ? 'text-gray-600' : 'text-white/90 drop-shadow'
                     }`}
                 >
                   Layanan Pengaduan Digital

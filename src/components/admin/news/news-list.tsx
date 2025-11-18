@@ -106,8 +106,7 @@ export default function NewsList({ news, loading, fetchNews }: NewsProps) {
                                 alt={item.title}
                                 fill
                                 style={{ objectFit: 'contain' }}
-                                width={800}
-                                height={800}
+                                
                                 className="transition-transform duration-300 group-hover:scale-105 h-full"
                             />
                             <div className="absolute inset-0 bg-black/10"></div>
@@ -139,6 +138,7 @@ export default function NewsList({ news, loading, fetchNews }: NewsProps) {
                             </div>
 
                             <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
+                                
                                 <div className="flex gap-3">
                                     <Button
                                         variant="outline"

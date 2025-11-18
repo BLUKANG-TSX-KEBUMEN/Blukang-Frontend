@@ -50,3 +50,9 @@ interface StatsResponse {
     completed: number
   }
 }
+
+interface SliderContent {
+  id: number;
+  imageSlider: string;
+  createdAt: string;
+}

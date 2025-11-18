@@ -108,8 +108,9 @@ const HomePage = () => {
                     <Image
                       src={news.imageArticle}
                       alt={news.title}
-                      width={500}
-                      height={500}
+                      width={800}
+                      height={800}
+                      style={{ objectFit: 'contain' }}
                       className="w-full sm:w-1/3 h-56 object-cover"
                     />
                     <div className="flex flex-col flex-1 p-5 space-y-3">

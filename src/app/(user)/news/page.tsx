@@ -121,6 +121,7 @@ const NewsPage = () => {
                     src={item.imageArticle}
                     alt={item.title}
                     fill
+                    style={{ objectFit: 'contain' }}
                     className="object-cover h-full rounded-r-xl"
                     priority={false}
                   />

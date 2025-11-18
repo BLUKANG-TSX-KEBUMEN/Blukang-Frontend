@@ -65,7 +65,7 @@ export default function NewsList({ news, loading, fetchNews }: NewsProps) {
         if (text.length <= limit) return text;
         return text.substring(0, limit) + '...';
     };
-    
+
     if (loading) {
         return (
             <div className="p-4 md:p-8">
@@ -86,7 +86,7 @@ export default function NewsList({ news, loading, fetchNews }: NewsProps) {
                 <Button
                     className="flex items-center gap-2 px-5 py-2 rounded-full font-semibold
                       bg-gradient-to-r from-blue-600 via-blue-700 to-slate-900 text-white hover:from-blue-700 hover:via-blue-800 hover:to-slate-800 hover:scale-105 transition-all duration-200"
-                      onClick={() => setOpenAddNewsDialog(true)}
+                    onClick={() => setOpenAddNewsDialog(true)}
                 >
                     <Plus className="h-4 w-4" strokeWidth={3} />
                     Tambah Berita
@@ -105,8 +105,10 @@ export default function NewsList({ news, loading, fetchNews }: NewsProps) {
                                 src={item.imageArticle || 'https://placehold.co/600x400/D1D5DB/4B5563?text=Gambar+Kosong'}
                                 alt={item.title}
                                 fill
-                                style={{ objectFit: 'cover' }}
-                                className="transition-transform duration-300 group-hover:scale-105 h-[90px]"
+                                style={{ objectFit: 'contain' }}
+                                width={800}
+                                height={800}
+                                className="transition-transform duration-300 group-hover:scale-105 h-full"
                             />
                             <div className="absolute inset-0 bg-black/10"></div>
                         </CardHeader>

@@ -116,7 +116,7 @@ export default function NewsAdd({
                                 name="bodyArticle"
                                 value={form.bodyArticle}
                                 onChange={handleChange}
-                                className="w-full border border-gray-300 rounded-md p-2"
+                                className="w-full border max-h-96 border-gray-300 rounded-md p-2"
                             />
                         </div>
 

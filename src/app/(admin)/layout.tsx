@@ -8,8 +8,8 @@ import { toast } from 'sonner';
 // Skeleton Loading Component
 const SidebarSkeleton = () => (
   <div className="w-64 bg-gray-100 p-4 h-screen animate-pulse">
-    <div className="h-35 bg-gray-300 rounded mb-6" />
-    {[...Array(6)].map((_, i) => (
+    <div className="h-45  bg-gray-300 rounded-full mb-6" />
+    {[...Array(4)].map((_, i) => (
       <div key={i} className="h-9 bg-gray-300 rounded mb-3" />
     ))}
   </div>
@@ -33,6 +33,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkAdminAuth = async () => {
       const token = localStorage.getItem('accessToken');
+
       if (!token) {
         router.push('/login');
         toast.error('Token verification failed', {

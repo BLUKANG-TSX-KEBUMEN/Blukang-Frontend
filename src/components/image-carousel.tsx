@@ -1,4 +1,4 @@
-'use client'; // Tambahkan ini jika Anda menggunakan App Router di Next.js
+'use client'; 
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -12,7 +12,6 @@ const HeroCarousel: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // --- 1. Fetching Data dari API ---
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,7 +45,7 @@ const HeroCarousel: React.FC = () => {
     fetchData();
   }, []); // Hanya dijalankan saat komponen di-mount
 
-  // --- 2. Auto-Slide Carousel ---
+
   useEffect(() => {
     // Hanya jalankan auto-slide jika ada gambar
     if (images.length === 0) return;
@@ -85,9 +84,9 @@ const HeroCarousel: React.FC = () => {
             <p className="text-sm">Tidak dapat memuat gambar carousel. {error ? `Error: ${error}` : 'Data kosong.'}</p>
             <p className="mt-2 text-xs">Menggunakan fallback gambar statis jika tersedia.</p>
         </div>
-        {/* FALLBACK STATIC IMAGE JIKA DIPERLUKAN */}
+    
         <Image
-            src="/fallback-hero.jpg" // Ganti dengan path gambar statis Anda
+            src="/hero-desa.jpg" // Ganti dengan path gambar statis Anda
             alt="Fallback Hero Image"
             fill
             className="object-cover brightness-[0.55]"
@@ -103,7 +102,6 @@ const HeroCarousel: React.FC = () => {
       className="relative w-full overflow-hidden"
       style={{ minHeight: '700px' }}
     >
-      {/* Container untuk semua slide */}
       <div className="absolute inset-0 transition-transform duration-500 ease-in-out" 
            style={{ 
                width: `${images.length * 100}%`, // Lebar total slide
@@ -127,9 +125,7 @@ const HeroCarousel: React.FC = () => {
               sizes="(max-width: 768px) 100vw, 100vw"
             />
 
-            {/* Overlay Text (Tetap Statis) */}
-            {/* Teks ditampilkan di atas semua slide, tetapi diposisikan secara absolut di dalam <section> */}
-            {/* Saya pindahkan teks di luar loop untuk ditampilkan sebagai overlay statis */}
+            
           </div>
         ))}
       </div>

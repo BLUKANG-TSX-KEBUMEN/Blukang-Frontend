@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     icon: "/admin.png", // untuk tab browser biasa
     shortcut: "/admin.png", // fallback shortcut
   },
+  verification: {
+    google: "L7jNuJm8wLkJKNKQx4Np7Gqq8H9xZsXw4hpyuH4Flks",
+  },
 };
 
 
